@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -8,6 +8,19 @@ import {
 } from 'react-native';
 
 const UserLogin = ({setUserEntered, setUser}) => {
+  const [user, saveUser] = useState('');
+  const [wrongUser, setWrongUser] = useState(false);
+  const regex = /\w(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+  const validateUser = () => {
+    const isValid = regex.test(user);
+    console.log(isValid);
+    if (isValid) {
+      setUser(user);
+      setUserEntered(true);
+    } else {
+      setWrongUser(true);
+    }
+  };
   return (
     <>
       <View style={styles.inputContainer}>
@@ -16,13 +29,18 @@ const UserLogin = ({setUserEntered, setUser}) => {
         <TextInput
           style={styles.input}
           onChangeText={(text) => {
-            setUser(text);
+            saveUser(text);
           }}
         />
       </View>
+      {wrongUser ? (
+        <View>
+          <Text>Ingresar el correo electrónico correctamente.</Text>
+        </View>
+      ) : null}
       <View>
         <TouchableHighlight
-          onPress={() => setUserEntered(true)}
+          onPress={() => validateUser()}
           style={styles.botonSubmit}>
           <Text style={styles.textoBotonSubmit}>Siguiente</Text>
         </TouchableHighlight>

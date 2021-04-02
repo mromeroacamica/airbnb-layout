@@ -50,6 +50,7 @@ const Login = ({setToken}) => {
             <PasswordLogin
               setPassword={setPassword}
               submitPassword={submitPassword}
+              user={user}
             />
           )}
         </View>

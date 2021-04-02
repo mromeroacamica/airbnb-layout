@@ -7,20 +7,34 @@ import {
   TouchableHighlight,
 } from 'react-native';
 
-const PasswordLogin = ({setPassword, submitPassword}) => {
+const PasswordLogin = ({setPassword, submitPassword, user}) => {
   const [visiblePassword, setVisiblePasssword] = useState(false);
+  const [password, savePassword] = useState('');
+  const [wrongPassword, setWrongPassword] = useState(false);
+  const validatePassword = () => {
+    if (password == '') {
+      setWrongPassword(true);
+    } else {
+      setPassword(password);
+      const res = submitPassword();
+    }
+  };
   return (
     <>
       <View style={styles.inputContainer}>
+        <Text style={styles.userText}>{user}</Text>
         <Text style={styles.text}>Ingresa tu contraseña</Text>
         <View style={styles.passwordInputContainer}>
           <TextInput
             secureTextEntry={!visiblePassword}
             style={styles.input}
             onChangeText={(text) => {
-              setPassword(text);
+              savePassword(text);
             }}
           />
+          {wrongPassword ? (
+            <Text>Ingrese correctamente su contraseña</Text>
+          ) : null}
           <TouchableHighlight
             onPress={() => setVisiblePasssword(!visiblePassword)}
             style={styles.tooglePassword}>
@@ -30,7 +44,7 @@ const PasswordLogin = ({setPassword, submitPassword}) => {
       </View>
       <View>
         <TouchableHighlight
-          onPress={() => submitPassword()}
+          onPress={() => validatePassword()}
           style={styles.botonSubmit}>
           <Text style={styles.textoBotonSubmit}>Siguiente</Text>
         </TouchableHighlight>
@@ -39,6 +53,9 @@ const PasswordLogin = ({setPassword, submitPassword}) => {
   );
 };
 const styles = StyleSheet.create({
+  userText: {
+    color: 'grey',
+  },
   inputContainer: {
     flexDirection: 'column',
     flex: 1,
