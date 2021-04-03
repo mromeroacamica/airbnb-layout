@@ -15,6 +15,7 @@ const PasswordLogin = ({setPassword, submitPassword, user}) => {
     if (password == '') {
       setWrongPassword(true);
     } else {
+      console.log(password);
       setPassword(password);
       const res = submitPassword();
     }

@@ -7,18 +7,18 @@ import {
   TouchableHighlight,
 } from 'react-native';
 
-const Container = (props) => {
+const ContainerScreen = (props) => {
   console.log(props);
   const navigateTo = (route) => {
     console.log(route);
-    navigation.navigate(route);
+    props.navigation.navigate(route);
   };
   return (
     <>
       <View style={styles.container}>{props.children}</View>
       <View style={styles.footerContainer}>
         <TouchableHighlight
-          onPress={() => navigateTo('Documentos')}
+          onPress={() => navigateTo('Inicio')}
           style={styles.botonSubmit}>
           <Text style={styles.textoBotonSubmit}>Siguiente</Text>
         </TouchableHighlight>
@@ -29,7 +29,8 @@ const Container = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Platform.OS === 'ios' ? 40 : 20,
+    paddingTop: Platform.OS === 'ios' ? 40 : 0,
+    backgroundColor: '#ece8f8',
   },
   footerContainer: {
     flexDirection: 'row',
@@ -38,4 +39,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Container;
+export default ContainerScreen;

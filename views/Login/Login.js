@@ -19,7 +19,7 @@ const Login = ({setToken}) => {
     }, 2500);
   }, []);
   const submitPassword = () => {
-    console.log('esto es el log in');
+    console.log('esto es el log in', password);
     setToken('hola');
   };
   return (
