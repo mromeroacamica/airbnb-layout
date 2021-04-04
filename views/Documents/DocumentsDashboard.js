@@ -10,14 +10,28 @@ const DocumentsDashboard = ({navigation}) => {
       <ContainerScreen navigation={navigation}>
         <View style={styles.cardContainer}>
           <View style={styles.card}>
-            <FontAwesomeIcon
-              icon={faFileAlt}
-              style={styles.iconStyle}
-              size={38}
-            />
-            <Text style={styles.text}>Pendientes de firma</Text>
+            <View style={styles.iconTextContainer}>
+              <FontAwesomeIcon
+                icon={faFileAlt}
+                style={styles.iconStyle}
+                size={38}
+              />
+              <Text style={styles.text}>Pendientes de firma</Text>
+            </View>
+            <View style={styles.count}>
+              <Text style={styles.countText}>3</Text>
+            </View>
           </View>
-          <View style={styles.card}></View>
+          <View style={styles.card}>
+            <View style={styles.iconTextContainer}>
+              <FontAwesomeIcon
+                icon={faFileSignature}
+                style={styles.iconStyle2}
+                size={38}
+              />
+              <Text style={styles.text}>Firmados</Text>
+            </View>
+          </View>
         </View>
       </ContainerScreen>
     </>
@@ -36,6 +50,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     paddingHorizontal: 15,
     marginBottom: 12,
     shadowColor: '#000',
@@ -48,13 +63,33 @@ const styles = StyleSheet.create({
 
     elevation: 5,
   },
+  iconTextContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   iconStyle: {
     color: '#3f51b5',
     marginRight: 10,
   },
+  iconStyle2: {
+    color: '#3f51b5',
+    marginRight: 10,
+    marginLeft: 5,
+  },
   text: {
     fontSize: 20,
     color: 'grey',
+  },
+  count: {
+    width: 30,
+    height: 30,
+    backgroundColor: '#f0ae42',
+    borderRadius: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  countText: {
+    color: 'white',
   },
 });
 

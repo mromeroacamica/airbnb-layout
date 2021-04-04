@@ -12,14 +12,14 @@ const ScreenHeader = ({fontIcon, title}) => {
             <FontAwesomeIcon
               icon={faFileAlt}
               style={styles.iconStyle}
-              size={38}
+              size={33}
             />
           ) : null}
           <Text style={styles.text}>{title}</Text>
         </View>
-        <View>
+        {/* <View>
           <FontAwesomeIcon icon={faBell} style={styles.iconStyle} size={25} />
-        </View>
+        </View> */}
       </View>
     </>
   );
@@ -42,8 +42,6 @@ const styles = StyleSheet.create({
   },
   topHeader: {
     display: 'flex',
-    flexGrow: 1,
-    width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

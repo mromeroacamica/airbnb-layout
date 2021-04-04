@@ -1,11 +1,11 @@
 import 'react-native-gesture-handler';
 import React, {useState} from 'react';
-import Container from './Components/Container/Container';
 import {StyleSheet, View, Image, Text, ScrollView} from 'react-native';
 import Login from './views/Login/Login';
 import Dashboard from './views/Dashboard/Dashboard';
 import DocumentsDashboard from './views/Documents/DocumentsDashboard';
 import ScreenHeader from './Components/ScreenHeader/ScreenHeader';
+import NotificationBell from './Components/notificationBell/notificationBell';
 
 //React navigation
 import {NavigationContainer} from '@react-navigation/native';
@@ -30,6 +30,7 @@ const App = () => {
               options={{
                 title: <ScreenHeader fontIcon="faCoffee" title="Documentos" />,
                 headerStyle,
+                headerRight: () => <NotificationBell />,
               }}
               name="Documentos"
               component={DocumentsDashboard}
