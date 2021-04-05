@@ -9,6 +9,7 @@ import {
 
 const ContainerScreen = (props) => {
   console.log(props);
+  const setDocuments = props.setDocuments;
   const navigateTo = (route) => {
     console.log(route);
     props.navigation.navigate(route);
@@ -18,9 +19,14 @@ const ContainerScreen = (props) => {
       <View style={styles.container}>{props.children}</View>
       <View style={styles.footerContainer}>
         <TouchableHighlight
-          onPress={() => navigateTo('Inicio')}
+          onPress={() => setDocuments(true)}
           style={styles.botonSubmit}>
-          <Text style={styles.textoBotonSubmit}>Siguiente</Text>
+          <Text style={styles.textoBotonSubmit}>Documentos</Text>
+        </TouchableHighlight>
+        <TouchableHighlight
+          onPress={() => setDocuments(false)}
+          style={styles.botonSubmit}>
+          <Text style={styles.textoBotonSubmit}>Inicio</Text>
         </TouchableHighlight>
       </View>
     </>
@@ -36,6 +42,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 50,
     backgroundColor: 'red',
+  },
+  textoBotonSubmit: {
+    marginRight: 25,
+    color: 'white',
   },
 });
 

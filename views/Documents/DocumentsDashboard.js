@@ -1,28 +1,35 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, ImageBackground, Text, Image} from 'react-native';
+import {View, StyleSheet, Text, TouchableHighlight} from 'react-native';
 import ContainerScreen from '../../Components/Container/Container';
+import CardList from '../../Components/CardList/CardList';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faFileAlt, faFileSignature} from '@fortawesome/free-solid-svg-icons';
 
-const DocumentsDashboard = ({navigation}) => {
+const DocumentsDashboard = ({navigation, setDocuments}) => {
+  const [prueba, setPrueba] = useState(false);
+  const navigateTo = (route) => {
+    navigation.navigate(route);
+  };
   return (
     <>
-      <ContainerScreen navigation={navigation}>
+      <ContainerScreen navigation={navigation} setDocuments={setDocuments}>
         <View style={styles.cardContainer}>
-          <View style={styles.card}>
-            <View style={styles.iconTextContainer}>
-              <FontAwesomeIcon
-                icon={faFileAlt}
-                style={styles.iconStyle}
-                size={38}
-              />
-              <Text style={styles.text}>Pendientes de firma</Text>
-            </View>
-            <View style={styles.count}>
-              <Text style={styles.countText}>3</Text>
-            </View>
-          </View>
-          <View style={styles.card}>
+          <TouchableHighlight onPress={() => navigateTo('DocumentsNotSigned')}>
+            <CardList>
+              <View style={styles.iconTextContainer}>
+                <FontAwesomeIcon
+                  icon={faFileAlt}
+                  style={styles.iconStyle}
+                  size={38}
+                />
+                <Text style={styles.text}>Pendientes de firma</Text>
+              </View>
+              <View style={styles.count}>
+                <Text style={styles.countText}>3</Text>
+              </View>
+            </CardList>
+          </TouchableHighlight>
+          <CardList>
             <View style={styles.iconTextContainer}>
               <FontAwesomeIcon
                 icon={faFileSignature}
@@ -31,7 +38,8 @@ const DocumentsDashboard = ({navigation}) => {
               />
               <Text style={styles.text}>Firmados</Text>
             </View>
-          </View>
+          </CardList>
+          {prueba ? <Text>HOLA ESTO ESTA BIEN</Text> : null}
         </View>
       </ContainerScreen>
     </>
