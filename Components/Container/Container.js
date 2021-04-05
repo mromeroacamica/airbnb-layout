@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {
   View,
   StyleSheet,
@@ -6,9 +6,12 @@ import {
   Text,
   TouchableHighlight,
 } from 'react-native';
+import RouteContext from '../../context/RouteContext';
 
 const ContainerScreen = (props) => {
+  const {route, setRoute} = useContext(RouteContext);
   console.log(props);
+  console.log('esto es route', route);
   const setDocuments = props.setDocuments;
   const navigateTo = (route) => {
     console.log(route);
@@ -19,12 +22,12 @@ const ContainerScreen = (props) => {
       <View style={styles.container}>{props.children}</View>
       <View style={styles.footerContainer}>
         <TouchableHighlight
-          onPress={() => setDocuments(true)}
+          onPress={() => setRoute(true)}
           style={styles.botonSubmit}>
           <Text style={styles.textoBotonSubmit}>Documentos</Text>
         </TouchableHighlight>
         <TouchableHighlight
-          onPress={() => setDocuments(false)}
+          onPress={() => setRoute(false)}
           style={styles.botonSubmit}>
           <Text style={styles.textoBotonSubmit}>Inicio</Text>
         </TouchableHighlight>
