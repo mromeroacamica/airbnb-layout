@@ -4,6 +4,7 @@ import Login from './views/Login/Login';
 import Dashboard from './views/Dashboard/Dashboard';
 import DocumentsDashboard from './views/Documents/DocumentsDashboard';
 import DocumentsNotSigned from './views/Documents/DocumentsNotSigned';
+import DocumentViewer from './views/Documents/DocumentViewer';
 import ScreenHeader from './Components/ScreenHeader/ScreenHeader';
 import NotificationBell from './Components/notificationBell/notificationBell';
 
@@ -30,13 +31,19 @@ const Navigation = () => {
       ) : (
         <NavigationContainer>
           {route ? (
-            <Stack.Navigator initialRouteName="Documentos">
+            <Stack.Navigator
+              initialRouteName="Documentos"
+              screenOptions={{
+                headerTintColor: '#fff',
+                headerStyle: {
+                  backgroundColor: '#3f51b5',
+                },
+              }}>
               <Stack.Screen
                 options={{
                   title: (
-                    <ScreenHeader fontIcon="faCoffee" title="Documentos" />
+                    <ScreenHeader fontIcon="faFileAlt" title="Documentos" />
                   ),
-                  headerStyle,
                   headerRight: () => <NotificationBell />,
                 }}
                 name="Documentos">
@@ -50,16 +57,30 @@ const Navigation = () => {
                       <Text style={styles.titleText}>/Pendientes de firma</Text>
                     </View>
                   ),
-                  headerStyle,
-                  headerTintColor: '#fff',
                   headerRight: () => <NotificationBell />,
                 }}
                 name="DocumentsNotSigned"
                 component={DocumentsNotSigned}
               />
+              <Stack.Screen
+                options={{
+                  title: (
+                    <View>
+                      <Text style={styles.titleText}>Hola</Text>
+                    </View>
+                  ),
+                  headerRight: () => <NotificationBell />,
+                }}
+                name="DocumentViewer"
+                component={DocumentViewer}
+              />
             </Stack.Navigator>
           ) : (
-            <Stack.Navigator initialRouteName="Inicio">
+            <Stack.Navigator
+              initialRouteName="Inicio"
+              screenOptions={{
+                headerTintColor: '#fff',
+              }}>
               <Stack.Screen name="Inicio">
                 {(props) => <Dashboard {...props} />}
               </Stack.Screen>

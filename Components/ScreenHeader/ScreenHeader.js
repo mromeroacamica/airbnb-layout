@@ -4,22 +4,25 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faFileAlt, faBell} from '@fortawesome/free-solid-svg-icons';
 
 const ScreenHeader = ({fontIcon, title}) => {
+  let icon;
+  switch (fontIcon) {
+    case 'faFileAlt':
+      icon = faFileAlt;
+      break;
+    case 'faBell':
+      icon = faBell;
+      break;
+    default:
+      icon = faFileAlt;
+      break;
+  }
   return (
     <>
       <View style={styles.topHeader}>
         <View style={styles.headerContainer}>
-          {fontIcon ? (
-            <FontAwesomeIcon
-              icon={faFileAlt}
-              style={styles.iconStyle}
-              size={33}
-            />
-          ) : null}
+          <FontAwesomeIcon icon={icon} style={styles.iconStyle} size={33} />
           <Text style={styles.text}>{title}</Text>
         </View>
-        {/* <View>
-          <FontAwesomeIcon icon={faBell} style={styles.iconStyle} size={25} />
-        </View> */}
       </View>
     </>
   );

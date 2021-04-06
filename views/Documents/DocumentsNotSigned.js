@@ -36,7 +36,7 @@ const DocumentsNotSigned = ({navigation, setDocuments}) => {
   const [prueba, setPrueba] = useState(false);
 
   const viewDocument = (documentId) => {
-    navigation.navigate({key: 'Inicio', params: {documentId: documentId}});
+    navigation.navigate('DocumentViewer');
   };
   return (
     <>
@@ -45,7 +45,9 @@ const DocumentsNotSigned = ({navigation, setDocuments}) => {
           <ScrollView>
             {recibosMeses.map((value, index) => {
               return (
-                <TouchableOpacity onPress={() => viewDocument(index)}>
+                <TouchableOpacity
+                  onPress={() => viewDocument(index)}
+                  key={index}>
                   <CardList>
                     <View style={styles.iconTextContainer}>
                       <FontAwesomeIcon

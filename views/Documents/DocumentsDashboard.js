@@ -25,7 +25,7 @@ const DocumentsDashboard = ({navigation, setDocuments}) => {
                 <Text style={styles.text}>Pendientes de firma</Text>
               </View>
               <View style={styles.count}>
-                <Text style={styles.countText}>3</Text>
+                <Text style={styles.countText}>19</Text>
               </View>
             </CardList>
           </TouchableOpacity>
