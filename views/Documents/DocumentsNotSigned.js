@@ -1,76 +1,68 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, Text, TouchableHighlight} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import ContainerScreen from '../../Components/Container/Container';
 import CardList from '../../Components/CardList/CardList';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faFileAlt, faFileSignature} from '@fortawesome/free-solid-svg-icons';
 
 const DocumentsNotSigned = ({navigation, setDocuments}) => {
+  const recibosMeses = [
+    {mes: 'Junio 2020'},
+    {mes: 'Julio 2020'},
+    {mes: 'Agosto 2020'},
+    {mes: 'Septiembre 2020'},
+    {mes: 'Octubre 2020'},
+    {mes: 'Noviembre 2020'},
+    {mes: 'Diciembre 2020'},
+    {mes: 'Enero 2021'},
+    {mes: 'Febrero 2021'},
+    {mes: 'Marzo 2021'},
+    {mes: 'Abril 2021'},
+    {mes: 'Mayo 2021'},
+    {mes: 'Junio 2021'},
+    {mes: 'Julio 2021'},
+    {mes: 'Agosto 2021'},
+    {mes: 'Septiembre 2021'},
+    {mes: 'Octubre 2021'},
+    {mes: 'Noviembre 2021'},
+    {mes: 'Diciembre 2021'},
+  ];
   const [prueba, setPrueba] = useState(false);
+
+  const viewDocument = (documentId) => {
+    navigation.navigate({key: 'Inicio', params: {documentId: documentId}});
+  };
   return (
     <>
       <ContainerScreen navigation={navigation} setDocuments={setDocuments}>
         <View style={styles.cardContainer}>
-          <TouchableHighlight onPress={() => setPrueba(true)}>
-            <CardList>
-              <View style={styles.iconTextContainer}>
-                <FontAwesomeIcon
-                  icon={faFileAlt}
-                  style={styles.iconStyle}
-                  size={38}
-                />
-                <Text style={styles.text}>Junio 2020</Text>
-              </View>
-              <View style={styles.count}>
-                <Text style={styles.countText}></Text>
-              </View>
-            </CardList>
-          </TouchableHighlight>
-          <TouchableHighlight onPress={() => setPrueba(true)}>
-            <CardList>
-              <View style={styles.iconTextContainer}>
-                <FontAwesomeIcon
-                  icon={faFileAlt}
-                  style={styles.iconStyle}
-                  size={38}
-                />
-                <Text style={styles.text}>Junio 2020</Text>
-              </View>
-              <View style={styles.count}>
-                <Text style={styles.countText}></Text>
-              </View>
-            </CardList>
-          </TouchableHighlight>
-          <TouchableHighlight onPress={() => setPrueba(true)}>
-            <CardList>
-              <View style={styles.iconTextContainer}>
-                <FontAwesomeIcon
-                  icon={faFileAlt}
-                  style={styles.iconStyle}
-                  size={38}
-                />
-                <Text style={styles.text}>Junio 2020</Text>
-              </View>
-              <View style={styles.count}>
-                <Text style={styles.countText}></Text>
-              </View>
-            </CardList>
-          </TouchableHighlight>
-          <TouchableHighlight onPress={() => setPrueba(true)}>
-            <CardList>
-              <View style={styles.iconTextContainer}>
-                <FontAwesomeIcon
-                  icon={faFileAlt}
-                  style={styles.iconStyle}
-                  size={38}
-                />
-                <Text style={styles.text}>Junio 2020</Text>
-              </View>
-              <View style={styles.count}>
-                <Text style={styles.countText}></Text>
-              </View>
-            </CardList>
-          </TouchableHighlight>
+          <ScrollView>
+            {recibosMeses.map((value, index) => {
+              return (
+                <TouchableOpacity onPress={() => viewDocument(index)}>
+                  <CardList>
+                    <View style={styles.iconTextContainer}>
+                      <FontAwesomeIcon
+                        icon={faFileAlt}
+                        style={styles.iconStyle}
+                        size={38}
+                      />
+                      <Text style={styles.text}>{value.mes}</Text>
+                    </View>
+                    <View style={styles.count}>
+                      <Text style={styles.countText}></Text>
+                    </View>
+                  </CardList>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
         </View>
       </ContainerScreen>
     </>
@@ -120,8 +112,8 @@ const styles = StyleSheet.create({
     color: 'grey',
   },
   count: {
-    width: 5,
-    height: 5,
+    width: 8,
+    height: 8,
     backgroundColor: '#f0ae42',
     borderRadius: 100,
     alignItems: 'center',

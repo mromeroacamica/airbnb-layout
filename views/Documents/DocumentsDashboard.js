@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, Text, TouchableHighlight} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import ContainerScreen from '../../Components/Container/Container';
 import CardList from '../../Components/CardList/CardList';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
@@ -14,7 +14,7 @@ const DocumentsDashboard = ({navigation, setDocuments}) => {
     <>
       <ContainerScreen navigation={navigation} setDocuments={setDocuments}>
         <View style={styles.cardContainer}>
-          <TouchableHighlight onPress={() => navigateTo('DocumentsNotSigned')}>
+          <TouchableOpacity onPress={() => navigateTo('DocumentsNotSigned')}>
             <CardList>
               <View style={styles.iconTextContainer}>
                 <FontAwesomeIcon
@@ -28,7 +28,7 @@ const DocumentsDashboard = ({navigation, setDocuments}) => {
                 <Text style={styles.countText}>3</Text>
               </View>
             </CardList>
-          </TouchableHighlight>
+          </TouchableOpacity>
           <CardList>
             <View style={styles.iconTextContainer}>
               <FontAwesomeIcon

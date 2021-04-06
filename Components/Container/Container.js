@@ -7,6 +7,14 @@ import {
   TouchableHighlight,
 } from 'react-native';
 import RouteContext from '../../context/RouteContext';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {
+  faFileAlt,
+  faPlaneDeparture,
+  faFileInvoiceDollar,
+  faComments,
+  faCog,
+} from '@fortawesome/free-solid-svg-icons';
 
 const ContainerScreen = (props) => {
   const {route, setRoute} = useContext(RouteContext);
@@ -24,12 +32,58 @@ const ContainerScreen = (props) => {
         <TouchableHighlight
           onPress={() => setRoute(true)}
           style={styles.botonSubmit}>
-          <Text style={styles.textoBotonSubmit}>Documentos</Text>
+          <View style={styles.iconTextContainer}>
+            <FontAwesomeIcon
+              icon={faFileAlt}
+              style={styles.iconStyle2}
+              size={22}
+            />
+            <Text style={styles.text}>Documentos</Text>
+          </View>
         </TouchableHighlight>
         <TouchableHighlight
           onPress={() => setRoute(false)}
           style={styles.botonSubmit}>
-          <Text style={styles.textoBotonSubmit}>Inicio</Text>
+          <View style={styles.iconTextContainer}>
+            <FontAwesomeIcon
+              icon={faPlaneDeparture}
+              style={styles.iconStyle2}
+              size={22}
+            />
+            <Text style={styles.text}>Licencias</Text>
+          </View>
+        </TouchableHighlight>
+        <TouchableHighlight
+          onPress={() => setRoute(true)}
+          style={styles.botonSubmit}>
+          <View style={styles.iconTextContainer}>
+            <FontAwesomeIcon
+              icon={faFileInvoiceDollar}
+              style={styles.iconStyle2}
+              size={22}
+            />
+            <Text style={styles.text}>Gastos y Viáticos</Text>
+          </View>
+        </TouchableHighlight>
+        <TouchableHighlight
+          onPress={() => setRoute(true)}
+          style={styles.botonSubmit}>
+          <View style={styles.iconTextContainer}>
+            <FontAwesomeIcon
+              icon={faComments}
+              style={styles.iconStyle2}
+              size={22}
+            />
+            <Text style={styles.text}>Consultas</Text>
+          </View>
+        </TouchableHighlight>
+        <TouchableHighlight
+          onPress={() => setRoute(true)}
+          style={styles.botonSubmit}>
+          <View style={styles.iconTextContainer}>
+            <FontAwesomeIcon icon={faCog} style={styles.iconStyle2} size={22} />
+            <Text style={styles.text}>Configuración</Text>
+          </View>
         </TouchableHighlight>
       </View>
     </>
@@ -44,11 +98,21 @@ const styles = StyleSheet.create({
   footerContainer: {
     flexDirection: 'row',
     height: 50,
-    backgroundColor: 'red',
+    backgroundColor: 'white',
+    justifyContent: 'space-between',
   },
-  textoBotonSubmit: {
-    marginRight: 25,
-    color: 'white',
+  iconTextContainer: {
+    marginHorizontal: 10,
+    marginVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconStyle2: {
+    color: '#3f51b5',
+  },
+  text: {
+    color: '#3f51b5',
+    fontSize: 10,
   },
 });
 
