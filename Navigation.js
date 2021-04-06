@@ -26,7 +26,7 @@ const Navigation = () => {
 
   return (
     <>
-      {!token === '' ? (
+      {token === '' ? (
         <Login setToken={setToken} />
       ) : (
         <NavigationContainer>

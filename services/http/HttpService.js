@@ -3,16 +3,39 @@ import axios from 'axios';
 
 class HttpServices {
   constructor() {}
-  async get(url, config = {}) {
-    const res = await axios.get(url, config);
+  get(url, config = {}) {
+    console.log('esto es el url', url);
+    const res = axios
+      .get(url, config)
+      .then((response) => {
+        console.log(response);
+        return response;
+      })
+      .catch((e) => {
+        console.log(e);
+        return e;
+      });
     return res;
   }
-  async put(url, body, config = {}) {
-    const res = await axios.get(url, body, config);
-    return res;
+  put(url, body, config = {}) {
+    const res = axios
+      .get(url, body, config)
+      .then((response) => {
+        return response;
+      })
+      .catch((e) => {
+        return e;
+      });
   }
-  async post(url, body, config = {}) {
-    const res = await axios.get(url, body, config);
+  post(url, body, config = {}) {
+    const res = axios
+      .get(url, body, config)
+      .then((response) => {
+        return response;
+      })
+      .catch((e) => {
+        return e;
+      });
     return res;
   }
 }

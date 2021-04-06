@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableHighlight,
 } from 'react-native';
+import TenantService from '../../services/tenant/TenantService';
 
 const UserLogin = ({setUserEntered, submitUser}) => {
   const [user, saveUser] = useState('');
@@ -14,11 +15,12 @@ const UserLogin = ({setUserEntered, submitUser}) => {
   const validateUser = async () => {
     const isValid = regex.test(user);
     console.log(user);
+    console.log(isValid);
     if (isValid) {
       const res = await TenantService.getTenants(user);
-      console.log(res);
+      console.log('esto es el res de tenant', res);
       submitUser(user);
-      setUserEntered(true);
+      // setUserEntered(true);
     } else {
       setWrongUser(true);
     }
