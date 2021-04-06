@@ -1,11 +1,5 @@
 import React, {useContext} from 'react';
-import {
-  View,
-  StyleSheet,
-  Platform,
-  Text,
-  TouchableHighlight,
-} from 'react-native';
+import {View, StyleSheet, Platform, Text, TouchableOpacity} from 'react-native';
 import RouteContext from '../../context/RouteContext';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
@@ -29,7 +23,7 @@ const ContainerScreen = (props) => {
     <>
       <View style={styles.container}>{props.children}</View>
       <View style={styles.footerContainer}>
-        <TouchableHighlight
+        <TouchableOpacity
           onPress={() => setRoute(true)}
           style={styles.botonSubmit}>
           <View style={styles.iconTextContainer}>
@@ -40,8 +34,8 @@ const ContainerScreen = (props) => {
             />
             <Text style={styles.text}>Documentos</Text>
           </View>
-        </TouchableHighlight>
-        <TouchableHighlight
+        </TouchableOpacity>
+        <TouchableOpacity
           onPress={() => setRoute(false)}
           style={styles.botonSubmit}>
           <View style={styles.iconTextContainer}>
@@ -52,8 +46,8 @@ const ContainerScreen = (props) => {
             />
             <Text style={styles.text}>Licencias</Text>
           </View>
-        </TouchableHighlight>
-        <TouchableHighlight
+        </TouchableOpacity>
+        <TouchableOpacity
           onPress={() => setRoute(true)}
           style={styles.botonSubmit}>
           <View style={styles.iconTextContainer}>
@@ -64,8 +58,8 @@ const ContainerScreen = (props) => {
             />
             <Text style={styles.text}>Gastos y Viáticos</Text>
           </View>
-        </TouchableHighlight>
-        <TouchableHighlight
+        </TouchableOpacity>
+        <TouchableOpacity
           onPress={() => setRoute(true)}
           style={styles.botonSubmit}>
           <View style={styles.iconTextContainer}>
@@ -76,15 +70,15 @@ const ContainerScreen = (props) => {
             />
             <Text style={styles.text}>Consultas</Text>
           </View>
-        </TouchableHighlight>
-        <TouchableHighlight
+        </TouchableOpacity>
+        <TouchableOpacity
           onPress={() => setRoute(true)}
           style={styles.botonSubmit}>
           <View style={styles.iconTextContainer}>
             <FontAwesomeIcon icon={faCog} style={styles.iconStyle2} size={22} />
             <Text style={styles.text}>Configuración</Text>
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
       </View>
     </>
   );
