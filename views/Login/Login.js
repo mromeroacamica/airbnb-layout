@@ -2,12 +2,9 @@ import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, ImageBackground, Text, Image} from 'react-native';
 import UserLogin from './UserLogin';
 import PasswordLogin from './PasswordLogin';
-import Container from '../../Components/Container/Container';
+import TenantService from '../../services/tenant/TenantService';
 
 const Login = ({setToken}) => {
-  const imageBackground = {
-    uri: 'https://sbox-dev.boxcustodia.com/api/background?tenant=localhost',
-  };
   const [imageLoad, setImageLoad] = useState(true);
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
@@ -16,8 +13,13 @@ const Login = ({setToken}) => {
   useEffect(() => {
     setTimeout(() => {
       setImageLoad(false);
-    }, 2500);
+    }, 1500);
   }, []);
+  const submitUser = async (user) => {
+    setUser(user);
+    const res = await TenantService.getTenants(user);
+    console.log(res);
+  };
   const submitPassword = () => {
     console.log('esto es el log in', password);
     setToken('hola');
@@ -45,7 +47,10 @@ const Login = ({setToken}) => {
             />
           </View>
           {!userEntered ? (
-            <UserLogin setUser={setUser} setUserEntered={setUserEntered} />
+            <UserLogin
+              submitUser={submitUser}
+              setUserEntered={setUserEntered}
+            />
           ) : (
             <PasswordLogin
               setPassword={setPassword}

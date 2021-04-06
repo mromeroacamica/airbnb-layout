@@ -8,15 +8,12 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-
     "set:env:prod": "cp ./config/env/prod.js ./config/env/environment.js",
     "set:env:test": "cp ./config/env/test.js ./config/env/environment.js",
     "set:env:dev": "cp ./config/env/dev.js ./config/env/environment.js",
-
     "run:android:prod": "npm run set:env:prod && npm run android",
     "run:android:test": "npm run set:env:test && npm run android",
     "run:android:dev": "npm run set:env:dev && npm run android",
-
     "run:ios:prod": "npm run set:env:prod && npm run ios",
     "run:ios:staging": "npm run set:env:staging && npm run ios",
     "run:ios:release": "npm run set:env:release && npm run ios"
@@ -29,6 +26,7 @@
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/native": "^5.9.3",
     "@react-navigation/stack": "^5.14.3",
+    "axios": "^0.21.1",
     "react": "16.13.1",
     "react-native": "0.63.4",
     "react-native-gesture-handler": "^1.10.3",
