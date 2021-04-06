@@ -63,16 +63,12 @@ const Navigation = () => {
                 component={DocumentsNotSigned}
               />
               <Stack.Screen
-                options={{
-                  title: (
-                    <View>
-                      <Text style={styles.titleText}>Hola</Text>
-                    </View>
-                  ),
-                  headerRight: () => <NotificationBell />,
-                }}
-                name="DocumentViewer"
                 component={DocumentViewer}
+                options={({route}) => ({
+                  title: route.params.otherParam,
+                  headerRight: () => <NotificationBell />,
+                })}
+                name="DocumentViewer"
               />
             </Stack.Navigator>
           ) : (
