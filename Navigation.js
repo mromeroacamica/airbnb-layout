@@ -8,6 +8,7 @@ import DocumentViewer from './views/Documents/DocumentViewer';
 import ScreenHeader from './Components/ScreenHeader/ScreenHeader';
 import NotificationBell from './Components/notificationBell/notificationBell';
 import ConfigComponent from './views/Config/ConfigComponent';
+import HelpComponent from './views/Config/HelpComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //React navigation
@@ -34,9 +35,6 @@ const Navigation = () => {
       TokenServices.token.detach(setToken);
     };
   }, []);
-  // useEffect(() => {
-  //   console.log(token);
-  // }, [token]);
   return (
     <>
       {token == null || token == '' ? (
@@ -117,6 +115,19 @@ const Navigation = () => {
                 }}
                 name="Config"
                 component={ConfigComponent}
+              />
+              <Stack.Screen
+                options={{
+                  title: (
+                    <View>
+                      <Text style={styles.subtitleText}>Configuración</Text>
+                      <Text style={styles.titleText}>/Ayuda</Text>
+                    </View>
+                  ),
+                  headerRight: () => <NotificationBell />,
+                }}
+                name="Help"
+                component={HelpComponent}
               />
             </Stack.Navigator>
           ) : null}
