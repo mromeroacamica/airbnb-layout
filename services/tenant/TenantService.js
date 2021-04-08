@@ -11,8 +11,9 @@ class TenantService {
 
     const headers = {headers: {'x-tenant': 'signbox'}};
     const res = await HttpService.get(url, headers);
-    if (res.status === StatusCodes.OK) {
-      return res.body;
+
+    if (res.status === 200) {
+      return res.data;
     }
     return false;
   }

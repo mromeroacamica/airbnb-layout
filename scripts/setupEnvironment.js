@@ -18,14 +18,11 @@ function writeFile(file, string) {
     return true;
   }
 
-  console.log(`File "${file}" not found.`);
   process.exit(1);
 }
 
 // Function that replaces the file content with the right content.
 function setEnvironment() {
-  console.log(`Setting environmet to ${env}...`);
-
   // String that will override the current export string
   const importerString = `export { env } from './${env}'\n`;
 
@@ -41,7 +38,6 @@ function setEnvironment() {
 
   // Writes right content inside the environment file
   writeFile(envIndexFileLocation, importerString);
-  console.log(`Environment successfully setted to ${env}.`);
   process.exit(0);
 }
 

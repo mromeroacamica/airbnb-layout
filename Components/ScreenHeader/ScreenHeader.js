@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faFileAlt, faBell} from '@fortawesome/free-solid-svg-icons';
+import {faFileAlt, faBell, faCog} from '@fortawesome/free-solid-svg-icons';
 
 const ScreenHeader = ({fontIcon, title}) => {
   let icon;
@@ -11,6 +11,9 @@ const ScreenHeader = ({fontIcon, title}) => {
       break;
     case 'faBell':
       icon = faBell;
+      break;
+    case 'faCog':
+      icon = faCog;
       break;
     default:
       icon = faFileAlt;

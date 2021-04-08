@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {StyleSheet, View, Image, Text, ScrollView} from 'react-native';
 import Login from './views/Login/Login';
 import Dashboard from './views/Dashboard/Dashboard';
@@ -7,6 +7,8 @@ import DocumentsNotSigned from './views/Documents/DocumentsNotSigned';
 import DocumentViewer from './views/Documents/DocumentViewer';
 import ScreenHeader from './Components/ScreenHeader/ScreenHeader';
 import NotificationBell from './Components/notificationBell/notificationBell';
+import ConfigComponent from './views/Config/ConfigComponent';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //React navigation
 import {NavigationContainer} from '@react-navigation/native';
@@ -14,23 +16,34 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 //importar state de context
 import RouteContext from './context/RouteContext';
+import TokenServices from './services/token/TokenServices';
 const Stack = createStackNavigator();
 
 const Navigation = () => {
-  const [token, setToken] = useState('');
+  const [token, setToken] = useState();
   const headerStyle = {
     backgroundColor: '#3f51b5',
   };
   const {route, setRoute} = useContext(RouteContext);
-  console.log('route desde inicio', route);
-
+  useEffect(() => {
+    const tokenGet = TokenServices.getToken();
+    console.log('tokenGet', tokenGet);
+    setToken(tokenGet);
+    TokenServices.token.attach(setToken);
+    return () => {
+      TokenServices.token.detach(setToken);
+    };
+  }, []);
+  // useEffect(() => {
+  //   console.log(token);
+  // }, [token]);
   return (
     <>
-      {token === '' ? (
-        <Login setToken={setToken} />
+      {token == null ? (
+        <Login />
       ) : (
         <NavigationContainer>
-          {route ? (
+          {route === 'documents' ? (
             <Stack.Navigator
               initialRouteName="Documentos"
               screenOptions={{
@@ -71,17 +84,42 @@ const Navigation = () => {
                 name="DocumentViewer"
               />
             </Stack.Navigator>
-          ) : (
+          ) : null}
+          {route === 'licencias' ? (
             <Stack.Navigator
               initialRouteName="Inicio"
               screenOptions={{
                 headerTintColor: '#fff',
+                headerStyle: {
+                  backgroundColor: '#3f51b5',
+                },
               }}>
               <Stack.Screen name="Inicio">
                 {(props) => <Dashboard {...props} />}
               </Stack.Screen>
             </Stack.Navigator>
-          )}
+          ) : null}
+          {route === 'config' ? (
+            <Stack.Navigator
+              initialRouteName="Config"
+              screenOptions={{
+                headerTintColor: '#fff',
+                headerStyle: {
+                  backgroundColor: '#3f51b5',
+                },
+              }}>
+              <Stack.Screen
+                options={{
+                  title: (
+                    <ScreenHeader fontIcon="faCog" title="Configuración" />
+                  ),
+                  headerRight: () => <NotificationBell />,
+                }}
+                name="Config"
+                component={ConfigComponent}
+              />
+            </Stack.Navigator>
+          ) : null}
         </NavigationContainer>
       )}
     </>

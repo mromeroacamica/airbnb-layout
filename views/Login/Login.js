@@ -3,12 +3,16 @@ import {View, StyleSheet, ImageBackground, Text, Image} from 'react-native';
 import UserLogin from './UserLogin';
 import PasswordLogin from './PasswordLogin';
 import TenantService from '../../services/tenant/TenantService';
+import SessionService from '../../services/session/SessionService';
+import TokenServices from '../../services/token/TokenServices';
 
-const Login = ({setToken}) => {
+const Login = () => {
   const [imageLoad, setImageLoad] = useState(true);
   const [user, setUser] = useState('');
   const [password, setPassword] = useState('');
   const [userEntered, setUserEntered] = useState(false);
+  const [tenant, setTenant] = useState('');
+  const [tenantId, setTenantId] = useState('');
 
   useEffect(() => {
     setTimeout(() => {
@@ -18,12 +22,27 @@ const Login = ({setToken}) => {
   const submitUser = async (user) => {
     setUser(user);
     const res = await TenantService.getTenants(user);
-    console.log(res);
+    if (res === false) {
+      this.notifyService.showError('Error en la conexión', MessageTypes.ERROR);
+      return;
+    }
+    if (res.length > 1) {
+      //agregar las vistas para mas de un tenant
+      return;
+    } else if (res.length === 1) {
+      setUserEntered(true);
+      setTenant(res[0].tenantName);
+      setTenantId(res[0].id);
+      SessionService.setTenant(res[0].tenantName);
+    } else {
+      setUserEntered(true);
+    }
   };
-  const submitPassword = () => {
-    console.log('esto es el log in', password);
-    setToken('hola');
+  const submitPassword = async (password) => {
+    const res = await SessionService.logIn(user, password);
+    const store = await TokenServices.setToken(res.data);
   };
+
   return (
     <>
       {/* <Container> */}

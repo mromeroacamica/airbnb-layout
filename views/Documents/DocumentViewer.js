@@ -3,7 +3,6 @@ import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 
 const DocumentViewer = ({route}) => {
   const {itemId, otherParam} = route.params;
-  console.log(itemId, otherParam);
   return (
     <View style={styles.container}>
       <View style={styles.documentViewerContainer}>

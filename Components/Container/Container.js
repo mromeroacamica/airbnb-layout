@@ -12,11 +12,8 @@ import {
 
 const ContainerScreen = (props) => {
   const {route, setRoute} = useContext(RouteContext);
-  console.log(props);
-  console.log('esto es route', route);
   const setDocuments = props.setDocuments;
   const navigateTo = (route) => {
-    console.log(route);
     props.navigation.navigate(route);
   };
   return (
@@ -24,7 +21,7 @@ const ContainerScreen = (props) => {
       <View style={styles.container}>{props.children}</View>
       <View style={styles.footerContainer}>
         <TouchableOpacity
-          onPress={() => setRoute(true)}
+          onPress={() => setRoute('documents')}
           style={styles.botonSubmit}>
           <View style={styles.iconTextContainer}>
             <FontAwesomeIcon
@@ -36,7 +33,7 @@ const ContainerScreen = (props) => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => setRoute(false)}
+          onPress={() => setRoute('licencias')}
           style={styles.botonSubmit}>
           <View style={styles.iconTextContainer}>
             <FontAwesomeIcon
@@ -48,7 +45,7 @@ const ContainerScreen = (props) => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => setRoute(true)}
+          onPress={() => setRoute('documents')}
           style={styles.botonSubmit}>
           <View style={styles.iconTextContainer}>
             <FontAwesomeIcon
@@ -60,7 +57,7 @@ const ContainerScreen = (props) => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => setRoute(true)}
+          onPress={() => setRoute('documents')}
           style={styles.botonSubmit}>
           <View style={styles.iconTextContainer}>
             <FontAwesomeIcon
@@ -72,7 +69,7 @@ const ContainerScreen = (props) => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => setRoute(true)}
+          onPress={() => setRoute('config')}
           style={styles.botonSubmit}>
           <View style={styles.iconTextContainer}>
             <FontAwesomeIcon icon={faCog} style={styles.iconStyle2} size={22} />

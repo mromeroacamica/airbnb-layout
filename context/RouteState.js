@@ -8,13 +8,11 @@ const RouteState = (props) => {
   const initialState = {
     route: false,
   };
-  const [route, setRoute] = useState(true);
+  const [route, setRoute] = useState('documents');
 
   //useReducer con dispatch para ejectuar las funciones
   const [state, dispatch] = useReducer(RouteReducer, initialState);
-  const mostrarConsola = () => {
-    console.log('hola a todos');
-  };
+  const mostrarConsola = () => {};
   return (
     <RouteContext.Provider
       value={{

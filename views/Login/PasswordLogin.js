@@ -15,9 +15,8 @@ const PasswordLogin = ({setPassword, submitPassword, user}) => {
     if (password == '') {
       setWrongPassword(true);
     } else {
-      console.log(password);
       setPassword(password);
-      const res = submitPassword();
+      submitPassword(password);
     }
   };
   return (
@@ -30,7 +29,7 @@ const PasswordLogin = ({setPassword, submitPassword, user}) => {
             secureTextEntry={!visiblePassword}
             style={styles.input}
             onChangeText={(text) => {
-              savePassword(text);
+              savePassword(text.trim());
             }}
           />
           {wrongPassword ? (
