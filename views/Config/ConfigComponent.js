@@ -9,6 +9,7 @@ import TokenServices from '../../services/token/TokenServices';
 const ConfigComponent = ({navigation, setDocuments}) => {
   const logOut = () => {
     const res = TokenServices.setToken(null);
+    //cambiar route de useContext
   };
   return (
     <>

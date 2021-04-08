@@ -39,7 +39,7 @@ const Navigation = () => {
   // }, [token]);
   return (
     <>
-      {token == null ? (
+      {token == null || token == '' ? (
         <Login />
       ) : (
         <NavigationContainer>

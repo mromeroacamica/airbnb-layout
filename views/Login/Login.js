@@ -20,8 +20,10 @@ const Login = () => {
     }, 1500);
   }, []);
   const submitUser = async (user) => {
+    console.log('este es el user', user);
     setUser(user);
     const res = await TenantService.getTenants(user);
+    console.log('esto es res', res);
     if (res === false) {
       this.notifyService.showError('Error en la conexión', MessageTypes.ERROR);
       return;
