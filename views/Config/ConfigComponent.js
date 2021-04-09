@@ -3,12 +3,19 @@ import {View, StyleSheet, Text, TouchableOpacity, Alert} from 'react-native';
 import ContainerScreen from '../../Components/Container/Container';
 import CardList from '../../Components/CardList/CardList';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faSignOutAlt, faInfoCircle} from '@fortawesome/free-solid-svg-icons';
+import {
+  faSignOutAlt,
+  faInfoCircle,
+  faEdit,
+} from '@fortawesome/free-solid-svg-icons';
+import ImageRound from '../../Components/ImageRound/ImageRound';
 import TokenServices from '../../services/token/TokenServices';
 import RouteContext from '../../context/RouteContext';
 
 const ConfigComponent = ({navigation, setDocuments}) => {
   const {route, setRoute} = useContext(RouteContext);
+  const token = TokenServices.getToken();
+  console.log(token);
 
   const showAlert = () => {
     Alert.alert('Cerrar sesión', 'Estas por cerrar sesión de la aplicación', [
@@ -33,7 +40,23 @@ const ConfigComponent = ({navigation, setDocuments}) => {
     <>
       <ContainerScreen navigation={navigation} setDocuments={setDocuments}>
         <View style={styles.namePhotoWrapper}>
-          <Text>Nombre y foto perfil</Text>
+          <TouchableOpacity onPress={() => navigateTo('Profile')}>
+            <CardList propStyles={styles.card2}>
+              <View style={styles.iconTextContainer}>
+                <ImageRound />
+                <Text style={styles.text}>
+                  {token.account.firstName} {token.account.lastName}
+                </Text>
+              </View>
+              <View>
+                <FontAwesomeIcon
+                  icon={faEdit}
+                  style={styles.iconStyle}
+                  size={20}
+                />
+              </View>
+            </CardList>
+          </TouchableOpacity>
         </View>
         <View style={styles.secondSection}>
           <Text>Primeros botones</Text>
@@ -71,6 +94,7 @@ const ConfigComponent = ({navigation, setDocuments}) => {
 const styles = StyleSheet.create({
   namePhotoWrapper: {
     flex: 1,
+    justifyContent: 'center',
   },
   secondSection: {
     flex: 1,
@@ -91,7 +115,7 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   card2: {
-    marginBottom: 40,
+    marginBottom: 30,
   },
 });
 

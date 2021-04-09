@@ -9,6 +9,7 @@ import ScreenHeader from './Components/ScreenHeader/ScreenHeader';
 import NotificationBell from './Components/notificationBell/notificationBell';
 import ConfigComponent from './views/Config/ConfigComponent';
 import HelpComponent from './views/Config/HelpComponent';
+import ProfileComponent from './views/Config/ProfileComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //React navigation
@@ -28,7 +29,6 @@ const Navigation = () => {
   const {route, setRoute} = useContext(RouteContext);
   useEffect(() => {
     const tokenGet = TokenServices.getToken();
-    console.log('tokenGet', tokenGet);
     setToken(tokenGet);
     TokenServices.token.attach(setToken);
     return () => {
@@ -128,6 +128,19 @@ const Navigation = () => {
                 }}
                 name="Help"
                 component={HelpComponent}
+              />
+              <Stack.Screen
+                options={{
+                  title: (
+                    <View>
+                      <Text style={styles.subtitleText}>Configuración</Text>
+                      <Text style={styles.titleText}>/Perfil</Text>
+                    </View>
+                  ),
+                  headerRight: () => <NotificationBell />,
+                }}
+                name="Profile"
+                component={ProfileComponent}
               />
             </Stack.Navigator>
           ) : null}

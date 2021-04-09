@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 
 const CardList = (props) => {
-  console.log(props);
   return <View style={[styles.card, props.propStyles]}>{props.children}</View>;
 };
 const styles = StyleSheet.create({
