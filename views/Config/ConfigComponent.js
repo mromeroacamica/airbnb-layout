@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity, Alert} from 'react-native';
 import ContainerScreen from '../../Components/Container/Container';
 import CardList from '../../Components/CardList/CardList';
@@ -8,15 +8,25 @@ import {
   faInfoCircle,
   faEdit,
 } from '@fortawesome/free-solid-svg-icons';
-import ImageRound from '../../Components/ImageRound/ImageRound';
+import RoundImage from '../../Components/RoundImage/RoundImage';
 import TokenServices from '../../services/token/TokenServices';
 import RouteContext from '../../context/RouteContext';
+import AccountServices from '../../services/account/AccountServices';
 
 const ConfigComponent = ({navigation, setDocuments}) => {
   const {route, setRoute} = useContext(RouteContext);
-  const token = TokenServices.getToken();
-  console.log(token);
-
+  const [token, setToken] = useState('');
+  const [photoUrl, setPhotoUrl] = useState('');
+  const [initials, setInitials] = useState('');
+  useEffect(() => {
+    const token = TokenServices.getToken();
+    setToken(token);
+    console.log('esto es el token', token);
+    setInitials(
+      token.account.lastName.slice(0, 1) + token.account.firstName.slice(0, 1),
+    );
+    setPhotoUrl(AccountServices.getAccountPhotoURL(token.account.id));
+  }, []);
   const showAlert = () => {
     Alert.alert('Cerrar sesión', 'Estas por cerrar sesión de la aplicación', [
       {
@@ -43,10 +53,12 @@ const ConfigComponent = ({navigation, setDocuments}) => {
           <TouchableOpacity onPress={() => navigateTo('Profile')}>
             <CardList propStyles={styles.card2}>
               <View style={styles.iconTextContainer}>
-                <ImageRound />
-                <Text style={styles.text}>
-                  {token.account.firstName} {token.account.lastName}
-                </Text>
+                <RoundImage imageUrl={photoUrl} initials={initials} />
+                {token !== '' && (
+                  <Text style={styles.text}>
+                    {token.account.firstName} {token.account.lastName}
+                  </Text>
+                )}
               </View>
               <View>
                 <FontAwesomeIcon
