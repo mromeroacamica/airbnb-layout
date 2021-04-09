@@ -22,6 +22,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 15,
     marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#ece8f8',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

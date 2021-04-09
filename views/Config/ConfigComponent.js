@@ -7,6 +7,8 @@ import {
   faSignOutAlt,
   faInfoCircle,
   faEdit,
+  faBell,
+  faLockOpen,
 } from '@fortawesome/free-solid-svg-icons';
 import RoundImage from '../../Components/RoundImage/RoundImage';
 import TokenServices from '../../services/token/TokenServices';
@@ -71,7 +73,30 @@ const ConfigComponent = ({navigation, setDocuments}) => {
           </TouchableOpacity>
         </View>
         <View style={styles.secondSection}>
-          <Text>Primeros botones</Text>
+          <TouchableOpacity onPress={() => navigateTo('Notifications')}>
+            <CardList propStyles={styles.card}>
+              <View style={styles.iconTextContainer}>
+                <FontAwesomeIcon
+                  icon={faBell}
+                  style={styles.iconStyle}
+                  size={38}
+                />
+                <Text style={styles.text}>Notificaciones</Text>
+              </View>
+            </CardList>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigateTo('Help')}>
+            <CardList propStyles={styles.card2}>
+              <View style={styles.iconTextContainer}>
+                <FontAwesomeIcon
+                  icon={faLockOpen}
+                  style={styles.iconStyle}
+                  size={38}
+                />
+                <Text style={styles.text}>Credenciales</Text>
+              </View>
+            </CardList>
+          </TouchableOpacity>
         </View>
         <View>
           <TouchableOpacity onPress={() => showAlert()}>

@@ -10,7 +10,7 @@ class AccountServices {
     return (
       config.baseUrl +
       `/api/custom/accounts/${accountId}/profile-pictures?size=${size}` +
-      `&token=${TokenServices.getToken().token}`
+      `&token=${TokenServices.getToken().token}&t=${new Date().getTime()}`
     );
   }
 }

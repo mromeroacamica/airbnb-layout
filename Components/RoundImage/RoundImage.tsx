@@ -9,8 +9,6 @@ export interface Props{
 
 const RoundImage: React.FC<Props> = ({initials, imageUrl}) => {
   const [hasImage, setHasImage] = useState(true)
-  console.log(imageUrl)
-
   return (
     <>
       <View style={[styles.roundImageContainer,!hasImage?styles.borderColor:null]}>
@@ -19,7 +17,7 @@ const RoundImage: React.FC<Props> = ({initials, imageUrl}) => {
         cache:'reload'}} onError={()=>{
         setHasImage(false)}}/>
         :
-        <Text>{initials}</Text>
+        <Text style={styles.initialsText}>{initials}</Text>
         }
       </View>
     </>
@@ -29,9 +27,9 @@ const styles = StyleSheet.create({
   roundImageContainer: {
     height: 55,
     width: 55,
-    borderRadius: 100,
     alignItems:'center',
-    justifyContent:'center'
+    justifyContent:'center',
+    marginRight:10
   },
   imageStyle:{
     height:48,
@@ -40,7 +38,12 @@ const styles = StyleSheet.create({
   },
   borderColor:{
     borderWidth:3,
-    borderColor:'blue'
+    borderColor:'blue',
+    borderRadius:100
+  },
+  initialsText:{
+    fontSize:18,
+    fontWeight:'bold'
   }
   
 });

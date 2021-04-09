@@ -10,6 +10,7 @@ import NotificationBell from './Components/notificationBell/notificationBell';
 import ConfigComponent from './views/Config/ConfigComponent';
 import HelpComponent from './views/Config/HelpComponent';
 import ProfileComponent from './views/Config/ProfileComponent';
+import NotificationsComponent from './views/Config/NotificationsComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //React navigation
@@ -141,6 +142,19 @@ const Navigation = () => {
                 }}
                 name="Profile"
                 component={ProfileComponent}
+              />
+              <Stack.Screen
+                options={{
+                  title: (
+                    <View>
+                      <Text style={styles.subtitleText}>Configuración</Text>
+                      <Text style={styles.titleText}>/Notificaciones</Text>
+                    </View>
+                  ),
+                  headerRight: () => <NotificationBell />,
+                }}
+                name="Notifications"
+                component={NotificationsComponent}
               />
             </Stack.Navigator>
           ) : null}
