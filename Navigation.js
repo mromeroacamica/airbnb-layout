@@ -1,6 +1,7 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext, useEffect, useMemo} from 'react';
 import {StyleSheet, View, Image, Text, ScrollView} from 'react-native';
 import Login from './views/Login/Login';
+import PasswordLogin from './views/Login/PasswordLogin';
 import Dashboard from './views/Dashboard/Dashboard';
 import DocumentsDashboard from './views/Documents/DocumentsDashboard';
 import DocumentsNotSigned from './views/Documents/DocumentsNotSigned';
@@ -12,6 +13,8 @@ import HelpComponent from './views/Config/HelpComponent';
 import ProfileComponent from './views/Config/ProfileComponent';
 import NotificationsComponent from './views/Config/NotificationsComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Colors} from './assets/style/Colors';
+import LogoHeader from './Components/LogoHeader/LogoHeader';
 
 //React navigation
 import {NavigationContainer} from '@react-navigation/native';
@@ -36,13 +39,11 @@ const Navigation = () => {
       TokenServices.token.detach(setToken);
     };
   }, []);
-  return (
-    <>
-      {token == null || token == '' ? (
-        <Login />
-      ) : (
-        <NavigationContainer>
-          {route === 'documents' ? (
+  const navigationStacks = useMemo(() => {
+    if (token != null || token != '') {
+      switch (route) {
+        case 'documents':
+          return (
             <Stack.Navigator
               initialRouteName="Documentos"
               screenOptions={{
@@ -83,22 +84,10 @@ const Navigation = () => {
                 name="DocumentViewer"
               />
             </Stack.Navigator>
-          ) : null}
-          {route === 'licencias' ? (
-            <Stack.Navigator
-              initialRouteName="Inicio"
-              screenOptions={{
-                headerTintColor: '#fff',
-                headerStyle: {
-                  backgroundColor: '#3f51b5',
-                },
-              }}>
-              <Stack.Screen name="Inicio">
-                {(props) => <Dashboard {...props} />}
-              </Stack.Screen>
-            </Stack.Navigator>
-          ) : null}
-          {route === 'config' ? (
+          );
+          break;
+        case 'config':
+          return (
             <Stack.Navigator
               initialRouteName="Config"
               screenOptions={{
@@ -157,9 +146,63 @@ const Navigation = () => {
                 component={NotificationsComponent}
               />
             </Stack.Navigator>
-          ) : null}
-        </NavigationContainer>
-      )}
+          );
+          break;
+        case 'licencias':
+          return (
+            <Stack.Navigator
+              initialRouteName="Inicio"
+              screenOptions={{
+                headerTintColor: '#fff',
+                headerStyle: {
+                  backgroundColor: '#3f51b5',
+                },
+              }}>
+              <Stack.Screen name="Inicio">
+                {(props) => <Dashboard {...props} />}
+              </Stack.Screen>
+            </Stack.Navigator>
+          );
+          break;
+        default:
+          null;
+          break;
+      }
+    }
+  }, [route, token]);
+  return (
+    <>
+      <NavigationContainer>
+        {token == null || token == '' ? (
+          <Stack.Navigator
+            initialRouteName="Login"
+            screenOptions={{
+              headerTintColor: Colors.text,
+              headerStyle: {
+                backgroundColor: '#fff',
+              },
+            }}>
+            <Stack.Screen
+              component={Login}
+              options={({route}) => ({
+                title: <LogoHeader />,
+                headerTitleAlign: 'center',
+              })}
+              name="Login"
+            />
+            <Stack.Screen
+              component={PasswordLogin}
+              options={({route}) => ({
+                title: <LogoHeader />,
+                headerTitleAlign: 'center',
+              })}
+              name="Password"
+            />
+          </Stack.Navigator>
+        ) : (
+          navigationStacks
+        )}
+      </NavigationContainer>
     </>
   );
 };
