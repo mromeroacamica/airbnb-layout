@@ -19,9 +19,10 @@ faEye
 
 export interface Props{
   route:any,
+  navigation:any
 }
 
-const PasswordLogin : React.FC<Props> = ({route}) => {
+const PasswordLogin : React.FC<Props> = ({route, navigation}) => {
   const {userName} = route.params;
   const [visiblePassword, setVisiblePasssword] = useState(false);
   const [password, savePassword] = useState('');
@@ -31,6 +32,9 @@ const PasswordLogin : React.FC<Props> = ({route}) => {
     const res = await SessionService.logIn(userName, password);
     const store = await TokenServices.setToken(res.data);
   };
+  const forgotPasswordHandler=()=>{
+    navigation.navigate('ForgotPassword')
+  }
   const validatePassword = () => {
     if (password == '') {
       setWrongPassword(true);
@@ -66,6 +70,14 @@ const PasswordLogin : React.FC<Props> = ({route}) => {
         {wrongPassword ? (
           <Text>Ingrese correctamente su contraseña</Text>
         ) : null}
+        <View style={styles.buttonForgotPw}>
+        <TouchableOpacity
+          onPress={() => forgotPasswordHandler()}
+          style={styles.buttonForgotPw}>
+          <Text style={styles.textoForgotPw}>Olvidé mi contraseña</Text>
+        </TouchableOpacity>  
+        </View>
+
       </View>
       <View>
         <TouchableOpacity
@@ -140,6 +152,14 @@ const styles = StyleSheet.create({
   },
   tooglePasswordText: {
     color: Colors.text,
+  },
+  buttonForgotPw:{
+    backgroundColor:'white'
+  },
+  textoForgotPw:{
+    fontSize:13,
+    color:Colors.primary,
+    backgroundColor:'white'
   },
   botonSubmit: {
     padding: 10,

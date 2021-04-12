@@ -2,6 +2,7 @@ import React, {useState, useContext, useEffect, useMemo} from 'react';
 import {StyleSheet, View, Image, Text, ScrollView} from 'react-native';
 import Login from './views/Login/Login';
 import PasswordLogin from './views/Login/PasswordLogin';
+import ForgotPassword from './views/Login/ForgotPassword';
 import Dashboard from './views/Dashboard/Dashboard';
 import DocumentsDashboard from './views/Documents/DocumentsDashboard';
 import DocumentsNotSigned from './views/Documents/DocumentsNotSigned';
@@ -197,6 +198,14 @@ const Navigation = () => {
                 headerTitleAlign: 'center',
               })}
               name="Password"
+            />
+            <Stack.Screen
+              component={ForgotPassword}
+              options={({route}) => ({
+                title: 'Olvidé mi contraseña',
+                headerTitleAlign: 'center',
+              })}
+              name="ForgotPassword"
             />
           </Stack.Navigator>
         ) : (
