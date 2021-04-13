@@ -4,6 +4,7 @@ import Login from './views/Login/Login';
 import PasswordLogin from './views/Login/PasswordLogin';
 import ForgotPassword from './views/Login/ForgotPassword';
 import PinConfig from './views/Login/PinConfig';
+import SetPin from './views/Login/SetPin';
 import Dashboard from './views/Dashboard/Dashboard';
 import DocumentsDashboard from './views/Documents/DocumentsDashboard';
 import DocumentsNotSigned from './views/Documents/DocumentsNotSigned';
@@ -204,10 +205,18 @@ const Navigation = () => {
             <Stack.Screen
               component={PinConfig}
               options={({route}) => ({
-                title: 'Olvidé mi contraseña',
+                title: 'Configurar PIN',
                 headerTitleAlign: 'center',
               })}
               name="PinConfig"
+            />
+            <Stack.Screen
+              component={SetPin}
+              options={({route}) => ({
+                title: 'Configurar PIN',
+                headerTitleAlign: 'center',
+              })}
+              name="SetPin"
             />
             <Stack.Screen
               options={({route}) => ({

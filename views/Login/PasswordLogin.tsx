@@ -37,6 +37,7 @@ const PasswordLogin : React.FC<Props> = ({route, navigation}) => {
     if(res.status === 200){
       console.log('entro ok')
       const store = await TokenServices.setToken(res.data);
+      console.log('paso el set token')
       const hasValidateCertificate = PinConfigServices.canActivate()
       console.log('hasvalidate', hasValidateCertificate)
       if(!hasValidateCertificate){
