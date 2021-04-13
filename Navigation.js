@@ -3,6 +3,7 @@ import {StyleSheet, View, Image, Text, ScrollView} from 'react-native';
 import Login from './views/Login/Login';
 import PasswordLogin from './views/Login/PasswordLogin';
 import ForgotPassword from './views/Login/ForgotPassword';
+import PinConfig from './views/Login/PinConfig';
 import Dashboard from './views/Dashboard/Dashboard';
 import DocumentsDashboard from './views/Documents/DocumentsDashboard';
 import DocumentsNotSigned from './views/Documents/DocumentsNotSigned';
@@ -24,6 +25,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 //importar state de context
 import RouteContext from './context/RouteContext';
 import TokenServices from './services/token/TokenServices';
+import PinConfigServices from './services/pin-config/PinConfigServices';
 const Stack = createStackNavigator();
 
 const Navigation = () => {
@@ -174,7 +176,7 @@ const Navigation = () => {
   return (
     <>
       <NavigationContainer>
-        {token == null || token == '' ? (
+        {token == null || token == '' || !PinConfigServices.canActivate() ? (
           <Stack.Navigator
             initialRouteName="Login"
             screenOptions={{
@@ -192,14 +194,6 @@ const Navigation = () => {
               name="Login"
             />
             <Stack.Screen
-              component={PasswordLogin}
-              options={({route}) => ({
-                title: <LogoHeader />,
-                headerTitleAlign: 'center',
-              })}
-              name="Password"
-            />
-            <Stack.Screen
               component={ForgotPassword}
               options={({route}) => ({
                 title: 'Olvidé mi contraseña',
@@ -207,6 +201,22 @@ const Navigation = () => {
               })}
               name="ForgotPassword"
             />
+            <Stack.Screen
+              component={PinConfig}
+              options={({route}) => ({
+                title: 'Olvidé mi contraseña',
+                headerTitleAlign: 'center',
+              })}
+              name="PinConfig"
+            />
+            <Stack.Screen
+              options={({route}) => ({
+                title: <LogoHeader />,
+                headerTitleAlign: 'center',
+              })}
+              name="Password">
+              {(props) => <PasswordLogin {...props} />}
+            </Stack.Screen>
           </Stack.Navigator>
         ) : (
           navigationStacks

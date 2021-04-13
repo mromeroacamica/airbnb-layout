@@ -17,7 +17,7 @@ class SessionService {
       username: domain,
       password,
     };
-    const url = config.baseUrl + '/api/auth/login';
+    const url = config.baseUrl + '/api/auth/login/mobile';
     const res = await HttpService.post(url, data, {
       headers: {
         'Access-Control-Allow-Origin': '*',

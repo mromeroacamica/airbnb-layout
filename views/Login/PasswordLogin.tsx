@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import SessionService from '../../services/session/SessionService'
 import TokenServices from '../../services/token/TokenServices';
+import PinConfigServices from '../../services/pin-config/PinConfigServices'
 
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
@@ -19,7 +20,7 @@ faEye
 
 export interface Props{
   route:any,
-  navigation:any
+  navigation:any,
 }
 
 const PasswordLogin : React.FC<Props> = ({route, navigation}) => {
@@ -30,7 +31,20 @@ const PasswordLogin : React.FC<Props> = ({route, navigation}) => {
 
   const submitPassword = async (password:any) => {
     const res = await SessionService.logIn(userName, password);
-    const store = await TokenServices.setToken(res.data);
+    console.log('esto es res',res)
+    console.log('esto es res',res.status)
+
+    if(res.status === 200){
+      console.log('entro ok')
+      const store = await TokenServices.setToken(res.data);
+      const hasValidateCertificate = PinConfigServices.canActivate()
+      console.log('hasvalidate', hasValidateCertificate)
+      if(!hasValidateCertificate){
+        navigation.navigate('PinConfig')
+      }
+    }else{
+      console.log('alert')
+    }
   };
   const forgotPasswordHandler=()=>{
     navigation.navigate('ForgotPassword')
