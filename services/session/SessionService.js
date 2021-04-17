@@ -1,13 +1,19 @@
 import config from '../../config/env/environment';
 import HttpService from '../http/HttpService';
+import TokenServices from '../token/TokenServices';
 
 class SessionService {
   constructor() {
     this.tenant = '';
     this.role = '';
+    this.currentUser;
   }
   setTenant(tenant) {
     this.tenant = tenant;
+  }
+  getCurrentUser() {
+    this.currentUser = TokenServices.getToken();
+    return this.currentUser;
   }
   getTenant() {
     return this.tenant;

@@ -23,7 +23,6 @@ const ConfigComponent = ({navigation, setDocuments}) => {
   useEffect(() => {
     const token = TokenServices.getToken();
     setToken(token);
-    console.log('esto es el token', token);
     setInitials(
       token.account.lastName.slice(0, 1) + token.account.firstName.slice(0, 1),
     );

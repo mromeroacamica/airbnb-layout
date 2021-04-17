@@ -9,7 +9,6 @@ class PinConfigServices {
   }
   getCurrentUser() {
     this.currentUser = TokenServices.getToken();
-    console.log('esto es current', this.currentUser);
     return this.currentUser;
   }
   canActivate() {
@@ -17,14 +16,10 @@ class PinConfigServices {
     if (this.currentUser == null) {
       return false;
     }
-    this.hasValidElectronicCertificate = this.currentUser.hasValidElectronicCertificate;
-    console.log('esto es certificate', this.hasValidElectronicCertificate);
+    this.hasValidElectronicCertificate = this.currentUser.account.hasValidElectronicCertificate;
     if (this.hasValidElectronicCertificate) {
-      // this.router.navigate(['dashboard']);
       return true;
     } else {
-      // this.navBarSrv.hide();
-      // this.router.navigate(['login', 'pin-config']);
       return false;
     }
   }

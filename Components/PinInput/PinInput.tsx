@@ -37,6 +37,7 @@ const PinInput: React.FC<PinInputProps> = ({visiblePassword,setPinPassword}) => 
     }
 
     useEffect(()=>{
+        console.log('esto es fourth',fourth)
         if(first != '' && second != '' && third !='' && fourth !=''){
             console.log('hola2')
             let pin:string =''

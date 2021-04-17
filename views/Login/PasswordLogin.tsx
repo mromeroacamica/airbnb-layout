@@ -6,7 +6,8 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Platform
+  Platform,
+  Alert
 } from 'react-native';
 import SessionService from '../../services/session/SessionService'
 import TokenServices from '../../services/token/TokenServices';
@@ -31,21 +32,22 @@ const PasswordLogin : React.FC<Props> = ({route, navigation}) => {
 
   const submitPassword = async (password:any) => {
     const res = await SessionService.logIn(userName, password);
-    console.log('esto es res',res)
-    console.log('esto es res',res.status)
 
     if(res.status === 200){
-      console.log('entro ok')
       const store = await TokenServices.setToken(res.data);
-      console.log('paso el set token')
       const hasValidateCertificate = PinConfigServices.canActivate()
-      console.log('hasvalidate', hasValidateCertificate)
       if(!hasValidateCertificate){
         navigation.navigate('PinConfig')
       }
     }else{
-      console.log('alert')
+      showAlert()
     }
+  };
+  const showAlert = () => {
+    Alert.alert('Credenciales erroneas', 'Su usuario o contraseña no son correctas.', [
+      
+      {text: 'Confirmar', onPress: () => console.log('Close')},
+    ]);
   };
   const forgotPasswordHandler=()=>{
     navigation.navigate('ForgotPassword')

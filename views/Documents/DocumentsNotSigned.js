@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   StyleSheet,
@@ -6,12 +6,15 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import ProcedureServices from '../../services/procedure/ProcedureServices';
 import ContainerScreen from '../../Components/Container/Container';
 import CardList from '../../Components/CardList/CardList';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faFileAlt, faFileSignature} from '@fortawesome/free-solid-svg-icons';
+import SessionService from '../../services/session/SessionService';
 
 const DocumentsNotSigned = ({navigation, setDocuments}) => {
+  const [receipts, setReceipts] = useState([]);
   const recibosMeses = [
     {mes: 'Junio 2020'},
     {mes: 'Julio 2020'},
@@ -41,12 +44,25 @@ const DocumentsNotSigned = ({navigation, setDocuments}) => {
       otherParam: documentType,
     });
   };
+  useEffect(() => {
+    let isMounted = true;
+    const currentUser = SessionService.getCurrentUser();
+    const roleId = currentUser.account.currentRole.id;
+    const filter = `&filter[roleId]=${roleId}`;
+    async function initDocumentNotSigned() {
+      const res = await ProcedureServices.getProcedures(filter, 0, 0);
+      if (isMounted) {
+        setReceipts(res);
+      }
+    }
+    initDocumentNotSigned();
+  }, []);
   return (
     <>
       <ContainerScreen navigation={navigation} setDocuments={setDocuments}>
         <View style={styles.cardContainer}>
           <ScrollView>
-            {recibosMeses.map((value, index) => {
+            {receipts.map((value, index) => {
               return (
                 <TouchableOpacity
                   onPress={() => viewDocument(index, value.mes)}

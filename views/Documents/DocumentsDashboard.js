@@ -1,15 +1,27 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import ContainerScreen from '../../Components/Container/Container';
 import CardList from '../../Components/CardList/CardList';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faFileAlt, faFileSignature} from '@fortawesome/free-solid-svg-icons';
+import ProcedureServices from '../../services/procedure/ProcedureServices';
 
 const DocumentsDashboard = ({navigation, setDocuments}) => {
   const [prueba, setPrueba] = useState(false);
+  const [countNotSigned, setCountNotSigned] = useState(0);
   const navigateTo = (route) => {
     navigation.navigate(route);
   };
+  useEffect(() => {
+    let isMounted = true;
+    async function initDocumentDashboard() {
+      const count = await ProcedureServices.getTotalProceduresCount();
+      if (isMounted) {
+        setCountNotSigned(count);
+      }
+    }
+    initDocumentDashboard();
+  }, []);
   return (
     <>
       <ContainerScreen navigation={navigation} setDocuments={setDocuments}>
@@ -25,7 +37,7 @@ const DocumentsDashboard = ({navigation, setDocuments}) => {
                 <Text style={styles.text}>Pendientes de firma</Text>
               </View>
               <View style={styles.count}>
-                <Text style={styles.countText}>19</Text>
+                <Text style={styles.countText}>{countNotSigned}</Text>
               </View>
             </CardList>
           </TouchableOpacity>
