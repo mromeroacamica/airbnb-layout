@@ -1,5 +1,5 @@
 import { Colors } from '../../assets/style/Colors';
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   StyleSheet,
@@ -16,9 +16,10 @@ export interface Props{
 }
 
 const SetPin : React.FC<Props> = ({navigation}) => {
-    
+    const [showPin, setShowPin] = useState(false)
+    const [pinPassword, setPinPassword] = useState('')
     const submitPin=async ()=>{
-       console.log('hola')
+       console.log('hola',pinPassword)
     }
     const showAlert = () => {
         Alert.alert('Envio correo electrónico', 'Se ha enviado el correo electrónico correctamente.', [
@@ -33,13 +34,18 @@ const SetPin : React.FC<Props> = ({navigation}) => {
         <Text style={styles.titleText}>Configura tu PIN</Text>
         <Text style={styles.textDetail}>Solo números</Text>
         <View style={styles.inputContainer}>
-            <PinInput/>
+            <PinInput visiblePassword={showPin} setPinPassword={setPinPassword}/>
+            <View style={styles.buttonShowContainer}>
+              <TouchableOpacity onPress={()=>setShowPin(!showPin)}>
+                <Text style={styles.textShow}>Mostrar</Text>
+              </TouchableOpacity>
+            </View>
         </View>
         <View>
             <TouchableOpacity
             onPress={() => submitPin()}
-            style={styles.botonSubmit}>
-            <Text style={styles.textoBotonSubmit}>ENVIAR</Text>
+            style={styles.buttonSubmit}>
+            <Text style={styles.textoButtonSubmit}>ENVIAR</Text>
             </TouchableOpacity>
         </View>
     </View>
@@ -70,9 +76,16 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: 'column',
-    // backgroundColor: 'blue',
     flex: 1,
     alignItems: 'flex-start',
+  },
+  buttonShowContainer:{
+    width:'100%',
+    alignItems:'center',
+  },
+  textShow:{
+    color:Colors.primary,
+    textAlign:'center'
   },
   
   label: {
@@ -84,7 +97,7 @@ const styles = StyleSheet.create({
     zIndex: 3,
   },
   
-  botonSubmit: {
+  buttonSubmit: {
     padding: 10,
     height: 45,
     backgroundColor: Colors.primary,
@@ -92,7 +105,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
   },
-  textoBotonSubmit: {
+  textoButtonSubmit: {
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#fff',
