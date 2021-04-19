@@ -37,12 +37,9 @@ const PinInput: React.FC<PinInputProps> = ({visiblePassword,setPinPassword}) => 
     }
 
     useEffect(()=>{
-        console.log('esto es fourth',fourth)
         if(first != '' && second != '' && third !='' && fourth !=''){
-            console.log('hola2')
             let pin:string =''
-            pin = first+second+third,fourth
-            console.log('esto es pin',pin)
+            pin = first+second+third+fourth
         }
     },[fourth])
 
@@ -60,9 +57,7 @@ const PinInput: React.FC<PinInputProps> = ({visiblePassword,setPinPassword}) => 
         onChangeText={(text) => {
             const cleanNumber = text.replace(/[^0-9]/g, "");
             setFirst(cleanNumber) 
-            console.log(text,cleanNumber)
             changeHandler(cleanNumber,secondInput,firstInput)
-            console.log('esto es onchange',first)
         }}
         
         value={first}
