@@ -40,6 +40,9 @@ const PinInput: React.FC<PinInputProps> = ({visiblePassword,setPinPassword}) => 
         if(first != '' && second != '' && third !='' && fourth !=''){
             let pin:string =''
             pin = first+second+third+fourth
+            setPinPassword(pin)
+        }else{
+            setPinPassword('')
         }
     },[fourth])
 

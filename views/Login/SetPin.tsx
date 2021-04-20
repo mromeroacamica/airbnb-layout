@@ -5,10 +5,8 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  Platform,
   Alert
 } from 'react-native';
-import AccountServices from '../../services/account/AccountServices';
 import PinInput from '../../Components/PinInput/PinInput'
 
 export interface Props{
@@ -19,14 +17,9 @@ const SetPin : React.FC<Props> = ({navigation}) => {
     const [showPin, setShowPin] = useState(false)
     const [pinPassword, setPinPassword] = useState('')
     const submitPin=async ()=>{
-       console.log('hola',pinPassword)
+      navigation.navigate('ConfirmPassword', {pinPassword: pinPassword});
     }
-    const showAlert = () => {
-        Alert.alert('Envio correo electrónico', 'Se ha enviado el correo electrónico correctamente.', [
-          
-          {text: 'Confirmar', onPress: () => navigation.navigate('Password')},
-        ]);
-      };
+
   
   return (
     <>
@@ -43,8 +36,9 @@ const SetPin : React.FC<Props> = ({navigation}) => {
         </View>
         <View>
             <TouchableOpacity
+            disabled={pinPassword == ''}
             onPress={() => submitPin()}
-            style={styles.buttonSubmit}>
+            style={[styles.buttonSubmit,pinPassword==''?styles.buttonDisabled:null]}>
             <Text style={styles.textoButtonSubmit}>ENVIAR</Text>
             </TouchableOpacity>
         </View>
@@ -104,6 +98,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     borderRadius: 8,
     justifyContent: 'center',
+  },
+  buttonDisabled:{
+    backgroundColor:'#7b85cc'
   },
   textoButtonSubmit: {
     fontWeight: 'bold',

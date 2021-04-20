@@ -5,6 +5,7 @@ import PasswordLogin from './views/Login/PasswordLogin';
 import ForgotPassword from './views/Login/ForgotPassword';
 import PinConfig from './views/Login/PinConfig';
 import SetPin from './views/Login/SetPin';
+import ConfirmPassword from './views/Login/ConfirmPassword';
 import Dashboard from './views/Dashboard/Dashboard';
 import DocumentsDashboard from './views/Documents/DocumentsDashboard';
 import DocumentsNotSigned from './views/Documents/DocumentsNotSigned';
@@ -38,7 +39,9 @@ const Navigation = () => {
   useEffect(() => {
     const tokenGet = TokenServices.getToken();
     setToken(tokenGet);
-    TokenServices.token.attach(setToken);
+    TokenServices.token.attach((value) => {
+      setToken({...value});
+    });
     return () => {
       TokenServices.token.detach(setToken);
     };
@@ -217,6 +220,14 @@ const Navigation = () => {
                 headerTitleAlign: 'center',
               })}
               name="SetPin"
+            />
+            <Stack.Screen
+              component={ConfirmPassword}
+              options={({route}) => ({
+                title: 'Confirmar contraseña',
+                headerTitleAlign: 'center',
+              })}
+              name="ConfirmPassword"
             />
             <Stack.Screen
               options={({route}) => ({

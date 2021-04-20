@@ -66,17 +66,8 @@ const Login = ({navigation}) => {
       ) : (
         <View style={styles.login}>
           <UserLogin submitUser={submitUser} setUserEntered={setUserEntered} />
-          {/* {!userEntered ? (
-          ) : (
-            <PasswordLogin
-              setPassword={setPassword}
-              submitPassword={submitPassword}
-              user={user}
-            />
-          )} */}
         </View>
       )}
-      {/* </Container> */}
     </>
   );
 };

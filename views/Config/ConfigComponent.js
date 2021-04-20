@@ -40,9 +40,8 @@ const ConfigComponent = ({navigation, setDocuments}) => {
   };
 
   const logOut = () => {
-    const res = TokenServices.setToken(null);
-    //cambiar route de useContext
     setRoute('documents');
+    const res = TokenServices.setToken(null);
   };
   const navigateTo = (screen) => {
     navigation.navigate(screen);

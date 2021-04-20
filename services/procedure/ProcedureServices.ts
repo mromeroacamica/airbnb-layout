@@ -37,7 +37,6 @@ class ProcedureServices {
       : !!sort
       ? `&${sort}`
       : '&sort=-creationDate';
-    console.log('esto es la url', url);
     const currentUser = SessionService.getCurrentUser();
     const headers = {
       Authorization: `Bearer ${currentUser.token}`,
