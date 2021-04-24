@@ -1,19 +1,35 @@
 import React from 'react';
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 
-const DocumentViewer = ({route}) => {
+const DocumentViewer = ({route, navigation}) => {
   const {itemId, otherParam} = route.params;
+  const signHandler = (conformity) => {
+    console.log(conformity);
+    navigation.navigate('PinConfirmation', {
+      itemId: itemId,
+      documentType: otherParam,
+      conformity: conformity ? 'Conforme' : 'Disconforme',
+    });
+  };
   return (
     <View style={styles.container}>
       <View style={styles.documentViewerContainer}>
         <Text>Esto es el documento </Text>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.buttonDisconformity}>
+        <TouchableOpacity
+          style={styles.buttonDisconformity}
+          onPress={() => {
+            signHandler(false);
+          }}>
           <Text style={styles.textDisconformity}>Firma</Text>
           <Text style={styles.textDisconformity}>Disconforme</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonConformity}>
+        <TouchableOpacity
+          style={styles.buttonConformity}
+          onPress={() => {
+            signHandler(true);
+          }}>
           <Text style={styles.textConformity}>Firma</Text>
           <Text style={styles.textConformity}>Conforme</Text>
         </TouchableOpacity>

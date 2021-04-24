@@ -37,14 +37,12 @@ const DocumentsNotSigned : React.FC<Props>= ({navigation, setDocuments}) => {
     const filter = `&filter[roleId]=${roleId}`;
     async function initDocumentNotSigned() {
       const res = await ProcedureServices.getProcedures(filter, 0, 0);
-      console.log(res)
       if (isMounted && res.length > 0) {
         for (let document of res) {
           document.selected = false;
         }
         res[0].disabled = false
         setReceipts(res);
-        console.log(res)
       }
     }
     initDocumentNotSigned();
@@ -79,7 +77,7 @@ const DocumentsNotSigned : React.FC<Props>= ({navigation, setDocuments}) => {
                     onLongPress={() => {
                       longPressHandler(value.selected, index);
                     }}
-                    delayLongPress={50}
+                    delayLongPress={800}
                     onPress={() =>
                       viewDocument(index, value.processDefinitionName)
                     } 

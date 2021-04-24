@@ -50,7 +50,6 @@ class ProcedureServices {
         ).obj;
         procedureItem.processDefinitionIdentificator =
           objectFound2.relationships.processDefinition.data.id;
-        console.log(objectFound2);
         procedureItem.processDefinitionName = objectFound2.attributes.name;
         procedureItem.disabled = true;
       }

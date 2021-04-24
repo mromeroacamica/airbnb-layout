@@ -10,6 +10,7 @@ import Dashboard from './views/Dashboard/Dashboard';
 import DocumentsDashboard from './views/Documents/DocumentsDashboard';
 import DocumentsNotSigned from './views/Documents/DocumentsNotSigned';
 import DocumentViewer from './views/Documents/DocumentViewer';
+import PinConfirmation from './views/Documents/PinConfirmation';
 import ScreenHeader from './Components/ScreenHeader/ScreenHeader';
 import NotificationBell from './Components/notificationBell/notificationBell';
 import ConfigComponent from './views/Config/ConfigComponent';
@@ -89,6 +90,14 @@ const Navigation = () => {
                   headerRight: () => <NotificationBell />,
                 })}
                 name="DocumentViewer"
+              />
+              <Stack.Screen
+                component={PinConfirmation}
+                options={({route}) => ({
+                  title: 'Firma ' + route.params.conformity,
+                  headerRight: () => <NotificationBell />,
+                })}
+                name="PinConfirmation"
               />
             </Stack.Navigator>
           );
