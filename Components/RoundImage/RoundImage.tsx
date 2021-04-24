@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {StyleSheet, View,Text,Image} from 'react-native';
-// import TokenServices from '../../services/token/TokenServices';
 
 export interface Props{
   initials:string,

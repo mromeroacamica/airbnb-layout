@@ -7,9 +7,19 @@ import {
   Image,
   TouchableHighlight,
 } from 'react-native';
+import {Colors} from '../../assets/style/Colors';
 
 const CardList = (props) => {
-  return <View style={[styles.card, props.propStyles]}>{props.children}</View>;
+  return (
+    <View
+      style={[
+        styles.card,
+        props.propStyles,
+        props.disabled ? styles.cardDisabled : null,
+      ]}>
+      {props.children}
+    </View>
+  );
 };
 const styles = StyleSheet.create({
   card: {
@@ -33,6 +43,9 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
 
     elevation: 5,
+  },
+  cardDisabled: {
+    backgroundColor: '#e0e0e0',
   },
 });
 

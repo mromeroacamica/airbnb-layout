@@ -50,27 +50,9 @@ class ProcedureServices {
         ).obj;
         procedureItem.processDefinitionIdentificator =
           objectFound2.relationships.processDefinition.data.id;
+        console.log(objectFound2);
         procedureItem.processDefinitionName = objectFound2.attributes.name;
-        // console.log(res);
-        // const newProcedureItem = Utils.copyToObj(
-        //   new ProcedureItem(),
-        //   ProcedureItem.keys(),
-        //   procedureItem.attributes,
-        // );
-        // newProcedureItem.processDefinitionIdentificator =
-        //   objectFound2.relationships.processDefinition.data.id;
-        // newProcedureItem.accountFullName =
-        //   procedureItem.attributes.ownerFullName;
-        // newProcedureItem.cuil = procedureItem.attributes.ownerCuil;
-        // newProcedureItem.name = objectFound2.attributes.name;
-        // newProcedureItem.processTime = procedureItem.attributes.assignmentDate;
-        // newProcedureItem.startTime = procedureItem.attributes.creationDate;
-        // newProcedureItem.id = procedureItem.id;
-        // newProcedureItem.period = procedureItem.attributes.visibleInView;
-        // newProcedureItem.documentId = procedureItem.id;
-        // newProcedureItem.type = newProcedureItem.processDefinitionName;
-        // response.push(newProcedureItem);
-        // continue;
+        procedureItem.disabled = true;
       }
       return res.data.data;
     } else {
