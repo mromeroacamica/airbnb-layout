@@ -15,8 +15,8 @@
     "run:android:test": "npm run set:env:test && npm run android",
     "run:android:dev": "npm run set:env:dev && npm run android",
     "run:ios:prod": "npm run set:env:prod && npm run ios",
-    "run:ios:staging": "npm run set:env:staging && npm run ios",
-    "run:ios:release": "npm run set:env:release && npm run ios"
+    "run:ios:dev": "npm run set:env:dev && npm run ios",
+    "run:ios:test": "npm run set:env:test && npm run ios"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",

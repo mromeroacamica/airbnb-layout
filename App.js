@@ -1,4 +1,3 @@
-import 'react-native-gesture-handler';
 import React, {useState, useContext, useEffect} from 'react';
 import {StyleSheet, View, Image, Text, ScrollView} from 'react-native';
 import TokenServices from './services/token/TokenServices';

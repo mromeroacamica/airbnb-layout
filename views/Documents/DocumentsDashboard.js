@@ -16,8 +16,8 @@ const DocumentsDashboard = ({navigation, setDocuments}) => {
     let isMounted = true;
     async function initDocumentDashboard() {
       const count = await ProcedureServices.getTotalProceduresCount();
-      if (isMounted) {
-        setCountNotSigned(count);
+      if (isMounted && count.status == 200) {
+        setCountNotSigned(count.data.total);
       }
     }
     initDocumentDashboard();

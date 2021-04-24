@@ -1,3 +1,4 @@
+import {Utils} from '../../Shared/Utils';
 import config from '../../config/env/environment';
 import HttpService from '../http/HttpService';
 import SessionService from '../session/SessionService';
@@ -8,14 +9,13 @@ class ProcedureServices {
   public async getTotalProceduresCount() {
     const currentUser = SessionService.getCurrentUser();
     const roleId = currentUser.account.currentRole.id;
-    const url =
-      config.baseUrl + `/api/documents-total?filter[roleId]=${roleId}`;
+    const url = config.baseUrl + `/api/documents-total?roleId=${roleId}`;
     const headers = {
       Authorization: `Bearer ${currentUser.token}`,
     };
     const res = await HttpService.get(url, {headers: headers});
     if (res.status == 200) {
-      return res.data.total;
+      return res;
     }
     return res;
   }
@@ -32,29 +32,26 @@ class ProcedureServices {
     if (limit != 0) {
       url += `&page[limit]=${limit}`;
     }
-    url += !!filters
-      ? `${filters}${!!sort ? `&${sort}` : '&sort=-creationDate'}`
-      : !!sort
-      ? `&${sort}`
-      : '&sort=-creationDate';
+    url += filters;
     const currentUser = SessionService.getCurrentUser();
     const headers = {
       Authorization: `Bearer ${currentUser.token}`,
     };
     const res = await HttpService.get(url, {headers: headers});
-    console.log(res);
     let body;
     // PROCESANDO LA RESPUESTA - ARMADO LOS REPORTES
     if (res != null && res.status == 200) {
-      body = res.body;
-      console.log(res);
-      return res.data.data;
+      body = res.data;
       for (const procedureItem of body.data) {
-        // const objectFound2: any = Utils.searchObjInArray(
-        //   res.body.included,
-        //   'id',
-        //   procedureItem.relationships.documentType.data.id,
-        // ).obj;
+        const objectFound2: any = Utils.searchObjInArray(
+          res.data.included,
+          'id',
+          procedureItem.relationships.documentType.data.id,
+        ).obj;
+        procedureItem.processDefinitionIdentificator =
+          objectFound2.relationships.processDefinition.data.id;
+        procedureItem.processDefinitionName = objectFound2.attributes.name;
+        // console.log(res);
         // const newProcedureItem = Utils.copyToObj(
         //   new ProcedureItem(),
         //   ProcedureItem.keys(),
@@ -75,6 +72,7 @@ class ProcedureServices {
         // response.push(newProcedureItem);
         // continue;
       }
+      return res.data.data;
     } else {
       return {
         data: response,
@@ -82,11 +80,6 @@ class ProcedureServices {
         error: res.status,
       };
     }
-
-    return {
-      data: response,
-      total: response.length,
-    };
   }
 }
 export default new ProcedureServices();

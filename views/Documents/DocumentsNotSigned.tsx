@@ -10,35 +10,18 @@ import ProcedureServices from '../../services/procedure/ProcedureServices';
 import ContainerScreen from '../../Components/Container/Container';
 import CardList from '../../Components/CardList/CardList';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faFileAlt, faFileSignature} from '@fortawesome/free-solid-svg-icons';
+import {faFileAlt} from '@fortawesome/free-solid-svg-icons';
 import SessionService from '../../services/session/SessionService';
 
-const DocumentsNotSigned = ({navigation, setDocuments}) => {
-  const [receipts, setReceipts] = useState([]);
-  const recibosMeses = [
-    {mes: 'Junio 2020'},
-    {mes: 'Julio 2020'},
-    {mes: 'Agosto 2020'},
-    {mes: 'Septiembre 2020'},
-    {mes: 'Octubre 2020'},
-    {mes: 'Noviembre 2020'},
-    {mes: 'Diciembre 2020'},
-    {mes: 'Enero 2021'},
-    {mes: 'Febrero 2021'},
-    {mes: 'Marzo 2021'},
-    {mes: 'Abril 2021'},
-    {mes: 'Mayo 2021'},
-    {mes: 'Junio 2021'},
-    {mes: 'Julio 2021'},
-    {mes: 'Agosto 2021'},
-    {mes: 'Septiembre 2021'},
-    {mes: 'Octubre 2021'},
-    {mes: 'Noviembre 2021'},
-    {mes: 'Diciembre 2021'},
-  ];
-  const [prueba, setPrueba] = useState(false);
+export interface Props{
+  navigation:any,
+  setDocuments:any
+}
 
-  const viewDocument = (documentId, documentType) => {
+const DocumentsNotSigned : React.FC<Props>= ({navigation, setDocuments}) => {
+  const [receipts, setReceipts] = useState<any[]>([]);
+
+  const viewDocument = (documentId:string, documentType:string) => {
     navigation.navigate('DocumentViewer', {
       itemId: documentId,
       otherParam: documentType,
@@ -51,36 +34,59 @@ const DocumentsNotSigned = ({navigation, setDocuments}) => {
     const filter = `&filter[roleId]=${roleId}`;
     async function initDocumentNotSigned() {
       const res = await ProcedureServices.getProcedures(filter, 0, 0);
-      if (isMounted) {
+      if (isMounted && res.length > 0) {
+        for (let document of res) {
+          document.selected = false;
+        }
         setReceipts(res);
+        console.log(res)
       }
     }
     initDocumentNotSigned();
   }, []);
+  const longPressHandler = (condition:boolean, index:number) => {
+    receipts[index].selected = !condition
+    setReceipts([...receipts])
+  };
   return (
     <>
       <ContainerScreen navigation={navigation} setDocuments={setDocuments}>
         <View style={styles.cardContainer}>
           <ScrollView>
-            {receipts.map((value, index) => {
+            {receipts.map((value:any, index:any) => {
               return (
-                <TouchableOpacity
-                  onPress={() => viewDocument(index, value.mes)}
-                  key={index}>
-                  <CardList>
-                    <View style={styles.iconTextContainer}>
-                      <FontAwesomeIcon
-                        icon={faFileAlt}
-                        style={styles.iconStyle}
-                        size={38}
-                      />
-                      <Text style={styles.text}>{value.mes}</Text>
-                    </View>
-                    <View style={styles.count}>
-                      <Text style={styles.countText}></Text>
-                    </View>
-                  </CardList>
-                </TouchableOpacity>
+                <View key={index}>
+                  <TouchableOpacity
+                    onLongPress={() => {
+                      longPressHandler(value.selected, index);
+                    }}
+                    delayLongPress={50}
+                    onPress={() =>
+                      viewDocument(index, value.processDefinitionName)
+                    }>
+                    <CardList>
+                      <View
+                        style={[
+                          styles.iconTextContainer,
+                          value.selected ? styles.cardSelected : null,
+                        ]}>
+                        <FontAwesomeIcon
+                          icon={faFileAlt}
+                          style={styles.iconStyle}
+                          size={38}
+                        />
+                        <Text style={styles.text}>
+                          {value.processDefinitionName}
+                          {value.attributes.visibleInView ? ':' : null}{' '}
+                          {value.attributes.visibleInView}
+                        </Text>
+                      </View>
+                      <View style={styles.count}>
+                        <Text style={styles.countText}></Text>
+                      </View>
+                    </CardList>
+                  </TouchableOpacity>
+                </View>
               );
             })}
           </ScrollView>
@@ -142,6 +148,9 @@ const styles = StyleSheet.create({
   },
   countText: {
     color: 'white',
+  },
+  cardSelected: {
+    backgroundColor: 'green',
   },
 });
 
