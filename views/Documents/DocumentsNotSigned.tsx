@@ -22,19 +22,47 @@ export interface Props{
 const DocumentsNotSigned : React.FC<Props>= ({navigation, setDocuments}) => {
   const [receipts, setReceipts] = useState<any[]>([]);
   const [checkedIdList, setCheckedIdList] = useState<any[]>([])
+  const [multiSelect, setMultiSelect] = useState(false)
   let processDefinitionId = '';
 
-  const viewDocument = (documentId:string, documentType:string) => {
-    navigation.navigate('DocumentViewer', {
-      itemId: documentId,
-      otherParam: documentType,
-    });
+  const viewDocument = (value:any, index:number) => {
+    const condition = value.selected
+    if(multiSelect && checkedIdList.length > 0){
+      receipts[index].selected = !condition
+    if (index !== 0) {
+      receipts[index - 1].disabled = !condition;
+    }
+    if (index < receipts.length - 1) {
+      receipts[index + 1].disabled = condition;
+    }
+    if (!condition) {
+      processDefinitionId = receipts[index].processDefinitionIdentificator;
+      setCheckedIdList([...checkedIdList,receipts[index].id])
+    } else {
+        setCheckedIdList(checkedIdList.filter(id=>id != receipts[index].id))
+        if(checkedIdList.length == 0){
+          setMultiSelect(false)
+        }
+    }
+    setReceipts([...receipts])
+    }else{
+      let documentTitle= ''
+      if(value.attributes.visibleInView !== null){
+        documentTitle =`${value.processDefinitionName}: ${value.attributes.visibleInView}`
+      }else{
+        documentTitle=`${value.processDefinitionName}`
+      }
+      navigation.navigate('DocumentViewer', {
+        itemId: value.id,
+        otherParam:documentTitle,
+      });
+    }
   };
   useEffect(() => {
     let isMounted = true;
     const currentUser = SessionService.getCurrentUser();
     const roleId = currentUser.account.currentRole.id;
-    const filter = `&filter[roleId]=${roleId}`;
+    const filter = `&filter[documentState]=IN_PROCESS&filter[roleId]=${roleId}`;
     async function initDocumentNotSigned() {
       const res = await ProcedureServices.getProcedures(filter, 0, 0);
       if (isMounted && res.length > 0) {
@@ -48,6 +76,12 @@ const DocumentsNotSigned : React.FC<Props>= ({navigation, setDocuments}) => {
     initDocumentNotSigned();
   }, []);
   const longPressHandler = (condition:boolean, index:number) => {
+    if(checkedIdList.length >=1){
+      return
+    }else if(condition && checkedIdList.length == 1){
+      setMultiSelect(false)
+    }
+    setMultiSelect(true)
     receipts[index].selected = !condition
     if (index !== 0) {
       receipts[index - 1].disabled = !condition;
@@ -62,7 +96,6 @@ const DocumentsNotSigned : React.FC<Props>= ({navigation, setDocuments}) => {
         setCheckedIdList(checkedIdList.filter(id=>id != receipts[index].id))
     }
     setReceipts([...receipts])
-    console.log('esto es checkedidlist',checkedIdList)
   };
 
   return (
@@ -79,7 +112,7 @@ const DocumentsNotSigned : React.FC<Props>= ({navigation, setDocuments}) => {
                     }}
                     delayLongPress={800}
                     onPress={() =>
-                      viewDocument(index, value.processDefinitionName)
+                      viewDocument(value, index)
                     } 
                     disabled={value.disabled}>
                     <CardList disabled={value.disabled}>

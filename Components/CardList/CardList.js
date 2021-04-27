@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  ImageBackground,
-  Text,
-  Image,
-  TouchableHighlight,
-} from 'react-native';
+import {View, StyleSheet, Text, TouchableHighlight} from 'react-native';
 import {Colors} from '../../assets/style/Colors';
 
 const CardList = (props) => {

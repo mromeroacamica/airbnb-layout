@@ -9,7 +9,7 @@ import ConfirmPassword from './views/Login/ConfirmPassword';
 import Dashboard from './views/Dashboard/Dashboard';
 import DocumentsDashboard from './views/Documents/DocumentsDashboard';
 import DocumentsNotSigned from './views/Documents/DocumentsNotSigned';
-import DocumentViewer from './views/Documents/DocumentViewer';
+import DocumentViewer from './views/Documents/DocuentViewer';
 import PinConfirmation from './views/Documents/PinConfirmation';
 import ScreenHeader from './Components/ScreenHeader/ScreenHeader';
 import NotificationBell from './Components/notificationBell/notificationBell';

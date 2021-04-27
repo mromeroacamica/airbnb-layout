@@ -1,9 +1,17 @@
-import React from 'react';
-import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
+import ProcedureServices from '../../services/procedure/ProcedureServices'
 
-const DocumentViewer = ({route, navigation}) => {
+export interface Props{
+  navigation:any,
+  route:any
+  setDocuments:any
+}
+
+const DocumentViewer: React.FC<Props> = ({route, navigation}) => {
   const {itemId, otherParam} = route.params;
-  const signHandler = (conformity) => {
+  const [uri, setUri] = useState('')
+  const signHandler = (conformity:boolean) => {
     console.log(conformity);
     navigation.navigate('PinConfirmation', {
       itemId: itemId,
@@ -11,10 +19,23 @@ const DocumentViewer = ({route, navigation}) => {
       conformity: conformity ? 'Conforme' : 'Disconforme',
     });
   };
+  useEffect(()=>{
+    let isMounted = true
+    async function initEnvelopes(){
+      const res = await ProcedureServices.getImageUrl(itemId,true)
+      if(isMounted){
+        setUri(res)
+      }
+    }
+    initEnvelopes()
+    return () => {
+      isMounted = false;
+    };
+  },[])
   return (
     <View style={styles.container}>
       <View style={styles.documentViewerContainer}>
-        <Text>Esto es el documento </Text>
+        <Image style={styles.documentImage} source={{uri}}/>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
@@ -38,6 +59,9 @@ const DocumentViewer = ({route, navigation}) => {
   );
 };
 const styles = StyleSheet.create({
+  documentImage:{
+    flex:1
+  },
   buttonContainer: {
     flexDirection: 'row',
     // flex: 1,

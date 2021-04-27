@@ -2,6 +2,7 @@ import {Utils} from '../../Shared/Utils';
 import config from '../../config/env/environment';
 import HttpService from '../http/HttpService';
 import SessionService from '../session/SessionService';
+import TokenServices from '../token/TokenServices';
 // import {Utils} from '../../Shared/Utils';
 
 class ProcedureServices {
@@ -18,6 +19,18 @@ class ProcedureServices {
       return res;
     }
     return res;
+  }
+  public getImageUrl(documentId: string, disableCache = false) {
+    const token = TokenServices.getToken();
+    console.log(token);
+    let url =
+      config.baseUrl +
+      `/api/document-downloads/${documentId}/images?token=${token.token}`;
+    if (disableCache === true) {
+      url += '&a=' + new Date().getTime();
+    }
+    const uriEncode = encodeURI(url);
+    return uriEncode;
   }
   public async getProcedures(
     filters = '',
