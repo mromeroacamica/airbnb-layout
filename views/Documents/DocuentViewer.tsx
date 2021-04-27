@@ -35,7 +35,9 @@ const DocumentViewer: React.FC<Props> = ({route, navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.documentViewerContainer}>
+        {uri===''?null:
         <Image style={styles.documentImage} source={{uri}}/>
+        }
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity
