@@ -21,7 +21,10 @@ const ContainerScreen = (props) => {
       <View style={styles.container}>{props.children}</View>
       <View style={styles.footerContainer}>
         <TouchableOpacity
-          onPress={() => setRoute('documents')}
+          onPress={() => {
+            setRoute('documents');
+            navigateTo('Documentos');
+          }}
           style={styles.botonSubmit}>
           <View style={styles.iconTextContainer}>
             <FontAwesomeIcon
@@ -69,7 +72,12 @@ const ContainerScreen = (props) => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => setRoute('config')}
+          onPress={() => {
+            setRoute('config');
+            if (navigateTo('Config')) {
+              navigateTo('Config');
+            }
+          }}
           style={styles.botonSubmit}>
           <View style={styles.iconTextContainer}>
             <FontAwesomeIcon icon={faCog} style={styles.iconStyle2} size={22} />

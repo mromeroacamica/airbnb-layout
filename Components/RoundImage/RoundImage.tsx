@@ -3,16 +3,29 @@ import {StyleSheet, View,Text,Image} from 'react-native';
 
 export interface Props{
   initials:string,
-  imageUrl?:string
+  imageUrl?:string,
+  imageSize?:number
 }
 
-const RoundImage: React.FC<Props> = ({initials, imageUrl}) => {
+const RoundImage: React.FC<Props> = ({initials, imageUrl,imageSize}) => {
   const [hasImage, setHasImage] = useState(true)
+  let imageSizeContainerStyle 
+  let imageSizeStyle 
+  if(imageSize !== undefined){
+    imageSizeContainerStyle={
+      height: imageSize+8,
+      width: imageSize+8,
+    }
+    imageSizeStyle={
+      height: imageSize,
+      width: imageSize,
+    }
+  }
   return (
     <>
-      <View style={[styles.roundImageContainer,!hasImage?styles.borderColor:null]}>
+      <View style={[styles.roundImageContainer,imageSizeContainerStyle,!hasImage?styles.borderColor:null]}>
         {hasImage && imageUrl !==''?
-        <Image style={styles.imageStyle} source={{uri:imageUrl,
+        <Image style={[styles.imageStyle,imageSizeStyle]} source={{uri:imageUrl,
         cache:'reload'}} onError={()=>{
         setHasImage(false)}}/>
         :

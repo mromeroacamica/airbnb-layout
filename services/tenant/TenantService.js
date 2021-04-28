@@ -10,8 +10,9 @@ class TenantService {
       encodeURIComponent(username);
 
     const headers = {headers: {'x-tenant': 'signbox'}};
+    console.log('hola');
     const res = await HttpService.get(url, headers);
-
+    console.log(res);
     if (res.status === 200) {
       return res.data;
     }
