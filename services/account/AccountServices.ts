@@ -37,5 +37,31 @@ class AccountServices {
     const res = await HttpService.post(url, body, {headers: headers});
     return res.status == 200;
   }
+  async getAllGenders() {
+    const url = config.baseUrl + '/api/genders/';
+    const headers = {
+      'Content-Type': 'application/vnd.api+json',
+      Authorization: `Bearer ${TokenServices.getToken().token}`,
+    };
+    const res: any = await HttpService.get(url, {headers});
+    return res;
+  }
+  async getAccount(id: string) {
+    const url = config.baseUrl + '/api/accounts/' + id;
+
+    const params = {
+      fields:
+        'firstName,lastName,birthdate,phone,gender,legajo,email,alternativeEmail,' +
+        'cuilCuit,roles,orgUnit,managedOrgUnits,registrationDate,employeeSince,profilePictureFileName,hasValidElectronicCertificate',
+    };
+
+    const headers = {
+      'Content-Type': 'application/vnd.api+json',
+      Authorization: `Bearer ${TokenServices.getToken().token}`,
+    };
+    const res: any = await HttpService.get(url, {headers, params});
+    console.log('esto es res de account', res);
+    return res;
+  }
 }
 export default new AccountServices();
