@@ -31,14 +31,17 @@
     "@types/react": "^17.0.3",
     "@types/react-native": "^0.64.2",
     "@types/react-test-renderer": "^17.0.1",
+    "@types/rn-fetch-blob": "^1.2.1",
     "axios": "^0.21.1",
     "react": "16.13.1",
     "react-native": "0.63.4",
     "react-native-gesture-handler": "^1.10.3",
+    "react-native-photo-view-ex": "^1.1.0",
     "react-native-reanimated": "^2.0.1",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^2.18.1",
     "react-native-svg": "^12.1.0",
+    "rn-fetch-blob": "^0.12.0",
     "typescript": "^4.2.4"
   },
   "devDependencies": {

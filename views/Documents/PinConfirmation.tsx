@@ -16,12 +16,39 @@ export interface Props{
 }
 
 const PinConfirmation : React.FC<Props> = ({route,navigation}) => {
+  const {itemId,conformity}=route.params
+  console.log(route)
     const [showPin, setShowPin] = useState(false)
     const [pinPassword, setPinPassword] = useState('')
     const submitPin=async ()=>{
-      const certificate=await SignServices.getCertificate()
-      console.log(certificate)
-      const certificatePem = await SignServices.getCertPem(pinPassword, certificate);
+      const certificate=await SignServices.getCertFile()
+      console.log('esto es certificate',certificate)
+      const certPem = await SignServices.getCertPem(pinPassword,certificate)
+      console.log(certPem)
+      let documentHash
+      let documentHashSigned
+      let endSign
+      if(certPem){
+        documentHash = await SignServices.getDocumentHash(itemId,certPem.pem,conformity)
+        console.log(documentHash)
+        if (documentHash){
+          const documentHashJson = documentHash.json()
+          documentHashSigned= await SignServices.signHash(pinPassword,documentHashJson.hash,certificate)
+        console.log(documentHashSigned)
+
+          if(documentHashSigned){
+            endSign = await SignServices.endSign(itemId,documentHashSigned,documentHashJson.token)
+        console.log(endSign)
+
+            if(endSign){
+              Alert.alert('Se firmo correctamente', 'Se ha firmado correctamente el/los documento/s.', [
+          
+                {text: 'Confirmar', onPress: () => navigation.navigate('DocumentsNotSigned')},
+              ]);
+            }
+          }
+        }
+      }
     }
 
   

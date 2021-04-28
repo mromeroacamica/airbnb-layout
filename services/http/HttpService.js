@@ -51,6 +51,7 @@ class HttpServices {
           return error.message;
         }
       });
+    return res;
   }
   post(url, body, config = {}) {
     const res = axios

@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, Image} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, Image, ScrollView} from 'react-native';
 import ProcedureServices from '../../services/procedure/ProcedureServices'
+import PhotoView from 'react-native-photo-view-ex'; 
 
 export interface Props{
   navigation:any,
@@ -16,7 +17,7 @@ const DocumentViewer: React.FC<Props> = ({route, navigation}) => {
     navigation.navigate('PinConfirmation', {
       itemId: itemId,
       documentType: otherParam,
-      conformity: conformity ? 'Conforme' : 'Disconforme',
+      conformity: conformity?'true':'false',
     });
   };
   useEffect(()=>{
@@ -36,7 +37,12 @@ const DocumentViewer: React.FC<Props> = ({route, navigation}) => {
     <View style={styles.container}>
       <View style={styles.documentViewerContainer}>
         {uri===''?null:
-        <Image style={styles.documentImage} source={{uri}}/>
+          <PhotoView
+              style={{ flex: 1, width: '100%', height: '100%' }}
+              source={{ uri: uri }} // you can supply any URL as well
+              minimumZoomScale={1} // max value can be 1
+              maximumZoomScale={5} // max value can be 3
+          />
         }
       </View>
       <View style={styles.buttonContainer}>
@@ -61,18 +67,15 @@ const DocumentViewer: React.FC<Props> = ({route, navigation}) => {
   );
 };
 const styles = StyleSheet.create({
-  documentImage:{
-    flex:1
-  },
   buttonContainer: {
     flexDirection: 'row',
-    // flex: 1,
   },
   documentViewerContainer: {
     backgroundColor: 'white',
     flexGrow: 1,
+    alignItems:'center'
   },
-  container: {flexGrow: 1},
+  container: {flexGrow:1},
   buttonDisconformity: {
     flexGrow: 1,
     alignItems: 'center',
