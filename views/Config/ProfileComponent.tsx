@@ -61,6 +61,7 @@ const ProfileComponent: React.FC<Props> = ({navigation, setDocuments}) => {
     const token = TokenServices.getToken();
     const resp = await SessionService.getTokenInformation();
     const resp2 = await AccountServices.getAccount(token.account.id)
+    console.log(resp,resp2)
     if (resp.status !== 200 || resp2.status !==200 ) {
       navigation.navigate('Config')
     }
@@ -97,14 +98,15 @@ const ProfileComponent: React.FC<Props> = ({navigation, setDocuments}) => {
     // token.account.birthdate = Utils.normalizeDate(token.account.birthdate);
 
     // Ajustar el offset del timestamp
-    if (token.account.birthdate != null) {
+    if (resp2.data.data.attributes.birthdate != null) {
       token.account.birthdate = new Date(token.account.birthdate);
       // token.account.birthdate= Utils.getDateFormat({date:token.account.birthdate,format:'Y/M/D'})
     }else{
       token.account.birthdate = SIN_DEFINIR
     }
-    if (token.account.employeeSince != null) {
-      token.account.employeeSince = new Date(token.account.employeeSince);
+    if (resp2.data.data.attributes.employeeSince != null) {
+      token.account.employeeSince = SIN_DEFINIR;
+      // token.account.employeeSince = new Date(token.account.employeeSince);
       // token.account.employeeSince =Utils.getDateFormat({date:token.account.employeeSince,format:'Y/M/D'})
     }else{
       token.account.employeeSince = SIN_DEFINIR

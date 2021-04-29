@@ -7,7 +7,6 @@ import {faFileAlt, faFileSignature} from '@fortawesome/free-solid-svg-icons';
 import ProcedureServices from '../../services/procedure/ProcedureServices';
 
 const DocumentsDashboard = ({navigation, setDocuments}) => {
-  const [prueba, setPrueba] = useState(false);
   const [countNotSigned, setCountNotSigned] = useState(0);
   const navigateTo = (route) => {
     navigation.navigate(route);
@@ -41,17 +40,18 @@ const DocumentsDashboard = ({navigation, setDocuments}) => {
               </View>
             </CardList>
           </TouchableOpacity>
-          <CardList>
-            <View style={styles.iconTextContainer}>
-              <FontAwesomeIcon
-                icon={faFileSignature}
-                style={styles.iconStyle2}
-                size={38}
-              />
-              <Text style={styles.text}>Firmados</Text>
-            </View>
-          </CardList>
-          {prueba ? <Text>HOLA ESTO ESTA BIEN</Text> : null}
+          <TouchableOpacity onPress={() => navigateTo('DocumentsNotSigned')}>
+            <CardList>
+              <View style={styles.iconTextContainer}>
+                <FontAwesomeIcon
+                  icon={faFileSignature}
+                  style={styles.iconStyle2}
+                  size={38}
+                />
+                <Text style={styles.text}>Firmados</Text>
+              </View>
+            </CardList>
+          </TouchableOpacity>
         </View>
       </ContainerScreen>
     </>

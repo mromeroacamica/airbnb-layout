@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import PinInput from '../../Components/PinInput/PinInput'
 import SignServices from '../../services/sign/sign.services'
+import SpinnerComponent from '../../Components/Spinner/Spinner.component';
+
 
 export interface Props{
   navigation:any,
@@ -19,8 +21,11 @@ const PinConfirmation : React.FC<Props> = ({route,navigation}) => {
   const {itemId,conformity}=route.params
   console.log(route)
     const [showPin, setShowPin] = useState(false)
-    const [pinPassword, setPinPassword] = useState('')
+    const [pinPassword, setPinPassword] = useState('');
+    const [showSpinner, setShowSpinner] = useState(false);
+
     const submitPin=async ()=>{
+      setShowSpinner(true)
       const certificate=await SignServices.getCertFile()
       console.log('esto es certificate',certificate)
       const certPem = await SignServices.getCertPem(pinPassword,certificate)
@@ -29,38 +34,40 @@ const PinConfirmation : React.FC<Props> = ({route,navigation}) => {
       let documentHashSigned
       let endSign
       if(certPem){
-        documentHash = await SignServices.getDocumentHash(itemId,certPem.pem,conformity)
-        console.log(documentHash)
-        if (documentHash){
-          const documentHashJson = documentHash.json()
-          documentHashSigned= await SignServices.signHash(pinPassword,documentHashJson.hash,certificate)
-        console.log(documentHashSigned)
-
-          if(documentHashSigned){
-            endSign = await SignServices.endSign(itemId,documentHashSigned,documentHashJson.token)
-        console.log(endSign)
-
-            if(endSign){
-              Alert.alert('Se firmo correctamente', 'Se ha firmado correctamente el/los documento/s.', [
-          
-                {text: 'Confirmar', onPress: () => navigation.navigate('DocumentsNotSigned')},
-              ]);
+        for(let item of itemId){
+          documentHash = await SignServices.getDocumentHash(item,certPem.pem,conformity)
+          console.log(documentHash)
+          if (documentHash){
+            const documentHashJson = documentHash.json()
+            documentHashSigned= await SignServices.signHash(pinPassword,documentHashJson.hash,certificate)
+          console.log(documentHashSigned)
+  
+            if(documentHashSigned){
+              endSign = await SignServices.endSign(item,documentHashSigned,documentHashJson.token)
             }
           }
         }
+        setShowSpinner(false)
+        Alert.alert('Se firmo correctamente', 'Se ha firmado correctamente el/los documento/s.', [
+            
+          {text: 'Confirmar', onPress: () => navigation.navigate('DocumentsNotSigned')},
+        ]);
       }
     }
 
   
   return (
     <>
+    {showSpinner?
+    <SpinnerComponent size={100}/>
+    :
     <View style={styles.login}>
         <Text style={styles.titleText}>Ingresa tu PIN de 4 digitos</Text>
         <View style={styles.inputContainer}>
             <PinInput visiblePassword={showPin} setPinPassword={setPinPassword}/>
             <View style={styles.buttonShowContainer}>
               <TouchableOpacity onPress={()=>setShowPin(!showPin)}>
-                <Text style={styles.textShow}>Firmar</Text>
+                <Text style={styles.textShow}>mostrar</Text>
               </TouchableOpacity>
             </View>
         </View>
@@ -69,10 +76,11 @@ const PinConfirmation : React.FC<Props> = ({route,navigation}) => {
             disabled={pinPassword == ''}
             onPress={() => submitPin()}
             style={[styles.buttonSubmit,pinPassword==''?styles.buttonDisabled:null]}>
-            <Text style={styles.textoButtonSubmit}>ENVIAR</Text>
+            <Text style={styles.textoButtonSubmit}>FIRMAR</Text>
             </TouchableOpacity>
         </View>
     </View>
+    }
     </>
   );
 };
@@ -137,6 +145,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#fff',
   },
+  
   
 });
 

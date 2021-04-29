@@ -9,6 +9,7 @@ import ConfirmPassword from './views/Login/ConfirmPassword';
 import Dashboard from './views/Dashboard/Dashboard';
 import DocumentsDashboard from './views/Documents/DocumentsDashboard';
 import DocumentsNotSigned from './views/Documents/DocumentsNotSigned';
+import DocumentsSigned from './views/Documents/DocumentsSigned';
 import DocumentViewer from './views/Documents/DocuentViewer';
 import PinConfirmation from './views/Documents/PinConfirmation';
 import ScreenHeader from './Components/ScreenHeader/ScreenHeader';
@@ -82,6 +83,19 @@ const Navigation = () => {
                 }}
                 name="DocumentsNotSigned"
                 component={DocumentsNotSigned}
+              />
+              <Stack.Screen
+                options={{
+                  title: (
+                    <View>
+                      <Text style={styles.subtitleText}>Documentos</Text>
+                      <Text style={styles.titleText}>/Firmados</Text>
+                    </View>
+                  ),
+                  headerRight: () => <NotificationBell />,
+                }}
+                name="DocumentsSigned"
+                component={DocumentsSigned}
               />
               <Stack.Screen
                 component={DocumentViewer}

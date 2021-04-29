@@ -19,7 +19,7 @@ export interface Props{
   setDocuments:any
 }
 
-const DocumentsNotSigned : React.FC<Props>= ({navigation, setDocuments}) => {
+const DocumentsSigned : React.FC<Props>= ({navigation, setDocuments}) => {
   const [receipts, setReceipts] = useState<any[]>([]);
   const [checkedIdList, setCheckedIdList] = useState<any[]>([])
   const [multiSelect, setMultiSelect] = useState(false)
@@ -236,4 +236,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DocumentsNotSigned;
+export default DocumentsSigned;
