@@ -12,15 +12,18 @@ const DocumentsDashboard = ({navigation, setDocuments}) => {
     navigation.navigate(route);
   };
   useEffect(() => {
-    let isMounted = true;
-    async function initDocumentDashboard() {
-      const count = await ProcedureServices.getTotalProceduresCount();
-      if (isMounted && count.status == 200) {
-        setCountNotSigned(count.data.total);
+    const unsubscribe = navigation.addListener('focus', () => {
+      let isMounted = true;
+      async function initDocumentDashboard() {
+        const count = await ProcedureServices.getTotalProceduresCount();
+        if (isMounted && count.status == 200) {
+          setCountNotSigned(count.data.total);
+        }
       }
-    }
-    initDocumentDashboard();
-  }, []);
+      initDocumentDashboard();
+    });
+    return unsubscribe;
+  }, [navigation]);
   return (
     <>
       <ContainerScreen navigation={navigation} setDocuments={setDocuments}>
@@ -40,7 +43,7 @@ const DocumentsDashboard = ({navigation, setDocuments}) => {
               </View>
             </CardList>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigateTo('DocumentsNotSigned')}>
+          <TouchableOpacity onPress={() => navigateTo('DocumentsSigned')}>
             <CardList>
               <View style={styles.iconTextContainer}>
                 <FontAwesomeIcon

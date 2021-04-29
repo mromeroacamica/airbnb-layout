@@ -30,17 +30,18 @@ const DocumentsSigned : React.FC<Props>= ({navigation, setDocuments}) => {
     if(multiSelect && checkedIdList.length > 0){
       receipts[index].selected = !condition
     if (index !== 0) {
-      receipts[index - 1].disabled = !condition;
+      // receipts[index - 1].disabled = !condition;
     }
     if (index < receipts.length - 1) {
-      receipts[index + 1].disabled = condition;
+      // receipts[index + 1].disabled = condition;
     }
     if (!condition) {
       processDefinitionId = receipts[index].processDefinitionIdentificator;
       setCheckedIdList([...checkedIdList,receipts[index].id])
     } else {
         setCheckedIdList(checkedIdList.filter(id=>id != receipts[index].id))
-        if(checkedIdList.length == 0){
+        console.log('esto es checkidList',checkedIdList)
+        if(checkedIdList.length < 2){
           setMultiSelect(false)
         }
     }
@@ -62,12 +63,14 @@ const DocumentsSigned : React.FC<Props>= ({navigation, setDocuments}) => {
     let isMounted = true;
     const currentUser = SessionService.getCurrentUser();
     const roleId = currentUser.account.currentRole.id;
-    const filter = `&filter[documentState]=IN_PROCESS&filter[roleId]=${roleId}`;
+    const filter = `&filter[documentState]=FINISHED&filter[roleId]=${roleId}&sort=-creationDate`;
     async function initDocumentNotSigned() {
       const res = await ProcedureServices.getProcedures(filter, 0, 0);
+      console.log(res)
       if (isMounted && res.length > 0) {
         for (let document of res) {
           document.selected = false;
+          document.disabled = false;
         }
         res[0].disabled = false
         setReceipts(res);
@@ -97,11 +100,8 @@ const DocumentsSigned : React.FC<Props>= ({navigation, setDocuments}) => {
     }
     setReceipts([...receipts])
   };
-  const signHandler = () => {
-    navigation.navigate('PinConfirmation', {
-      itemId: checkedIdList,
-      conformity: 'true',
-    });
+  const DownloadHandler = () => {
+    console.log('Descargar documentos',checkedIdList)
   };
 
   return (
@@ -140,7 +140,7 @@ const DocumentsSigned : React.FC<Props>= ({navigation, setDocuments}) => {
                           {value.attributes.visibleInView}
                         </Text>
                       </View>
-                      <View style={styles.count}>
+                      <View style={[value.attributes.conformity?styles.count:styles.countDisconforme]}>
                         <Text style={styles.countText}></Text>
                       </View>
                     </CardList>
@@ -153,9 +153,9 @@ const DocumentsSigned : React.FC<Props>= ({navigation, setDocuments}) => {
         {multiSelect?
           <View>
             <TouchableOpacity style={styles.buttonConformity} onPress={() => {
-            signHandler();
+            DownloadHandler();
           }}>
-              <Text style={styles.textConformity}>Firmar Masivamente</Text>
+              <Text style={styles.textConformity}>Descargar Masivamente</Text>
             </TouchableOpacity>
           </View>:null
         }
@@ -213,10 +213,18 @@ const styles = StyleSheet.create({
   count: {
     width: 8,
     height: 8,
-    backgroundColor: '#f0ae42',
+    backgroundColor: '#80e080',
     borderRadius: 100,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  countDisconforme:{
+    width: 8,
+    height: 8,
+    borderRadius: 100,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor:'#e08080'
   },
   countText: {
     color: 'white',

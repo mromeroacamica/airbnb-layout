@@ -13,6 +13,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faFileAlt} from '@fortawesome/free-solid-svg-icons';
 import SessionService from '../../services/session/SessionService';
 import RoundCheck from '../../Components/RoundCheck/RoundCheck';
+import SpinnerComponent from '../../Components/Spinner/Spinner.component';
 
 export interface Props{
   navigation:any,
@@ -20,6 +21,7 @@ export interface Props{
 }
 
 const DocumentsNotSigned : React.FC<Props>= ({navigation, setDocuments}) => {
+  const [initLoaded, setInitLoaded] = useState(false);
   const [receipts, setReceipts] = useState<any[]>([]);
   const [checkedIdList, setCheckedIdList] = useState<any[]>([])
   const [multiSelect, setMultiSelect] = useState(false)
@@ -40,7 +42,7 @@ const DocumentsNotSigned : React.FC<Props>= ({navigation, setDocuments}) => {
       setCheckedIdList([...checkedIdList,receipts[index].id])
     } else {
         setCheckedIdList(checkedIdList.filter(id=>id != receipts[index].id))
-        if(checkedIdList.length == 0){
+        if(checkedIdList.length < 2 && checkedIdList[0] === receipts[0].id){
           setMultiSelect(false)
         }
     }
@@ -58,23 +60,6 @@ const DocumentsNotSigned : React.FC<Props>= ({navigation, setDocuments}) => {
       });
     }
   };
-  useEffect(() => {
-    let isMounted = true;
-    const currentUser = SessionService.getCurrentUser();
-    const roleId = currentUser.account.currentRole.id;
-    const filter = `&filter[documentState]=IN_PROCESS&filter[roleId]=${roleId}`;
-    async function initDocumentNotSigned() {
-      const res = await ProcedureServices.getProcedures(filter, 0, 0);
-      if (isMounted && res.length > 0) {
-        for (let document of res) {
-          document.selected = false;
-        }
-        res[0].disabled = false
-        setReceipts(res);
-      }
-    }
-    initDocumentNotSigned();
-  }, []);
   const longPressHandler = (condition:boolean, index:number) => {
     if(checkedIdList.length >=1){
       return
@@ -104,8 +89,38 @@ const DocumentsNotSigned : React.FC<Props>= ({navigation, setDocuments}) => {
     });
   };
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      let isMounted = true;
+      const currentUser = SessionService.getCurrentUser();
+      const roleId = currentUser.account.currentRole.id;
+      const filter = `&filter[documentState]=IN_PROCESS&filter[roleId]=${roleId}`;
+      async function initDocumentNotSigned() {
+        const res = await ProcedureServices.getProcedures(filter, 0, 0);
+        if (isMounted && res.length > 0) {
+          for (let document of res) {
+            document.selected = false;
+          }
+          res[0].disabled = false
+          setReceipts(res);
+          setInitLoaded(true);
+        }
+        
+      }
+      initDocumentNotSigned();
+      return () => {
+        isMounted = false;
+      };
+    });
+    return unsubscribe;
+  }, [navigation]);
+  
+
   return (
     <>
+    {!initLoaded?
+      <SpinnerComponent size={100}/>   
+    :
       <ContainerScreen navigation={navigation} setDocuments={setDocuments}>
         <View style={styles.cardContainer}>
           <ScrollView>
@@ -160,6 +175,7 @@ const DocumentsNotSigned : React.FC<Props>= ({navigation, setDocuments}) => {
           </View>:null
         }
       </ContainerScreen>
+    } 
     </>
   );
 };
