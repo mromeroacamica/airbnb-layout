@@ -10,21 +10,34 @@ export interface Props{
 }
 
 const DocumentViewer: React.FC<Props> = ({route, navigation}) => {
-  const {itemId, otherParam} = route.params;
-  const [uri, setUri] = useState('')
+  const {itemId, otherParam,processDefinitionIdentificator} = route.params;
+  const [uri, setUri] = useState('');
+  const [hasDisconformity, setHasDisconformity] = useState(false);
   const signHandler = (conformity:boolean) => {
-    console.log(conformity);
-    navigation.navigate('PinConfirmation', {
-      itemId: itemId,
-      documentType: otherParam,
-      conformity: conformity?'true':'false',
-    });
+    if(conformity){
+      navigation.navigate('PinConfirmation', {
+        itemId: itemId,
+        documentType: otherParam,
+        conformity: conformity?'true':'false',
+      });
+    }else{
+      navigation.navigate('DisconformitySign', {
+        itemId: itemId,
+        documentType: otherParam,
+        conformity: conformity?'true':'false',
+        processDefinitionIdentificator:processDefinitionIdentificator
+      });
+    }
   };
   useEffect(()=>{
     let isMounted = true
     async function initEnvelopes(){
       const res = await ProcedureServices.getImageUrl(itemId,true)
+      const respDisconformityValues = await ProcedureServices.getPropertyOfProcessDefinition(processDefinitionIdentificator)
       if(isMounted){
+        if(respDisconformityValues.data.data[0]){
+         setHasDisconformity(true)   
+        }
         setUri(res)
       }
     }
@@ -32,6 +45,7 @@ const DocumentViewer: React.FC<Props> = ({route, navigation}) => {
     return () => {
       isMounted = false;
     };
+    
   },[])
   return (
     <View style={styles.container}>
@@ -46,6 +60,7 @@ const DocumentViewer: React.FC<Props> = ({route, navigation}) => {
         }
       </View>
       <View style={styles.buttonContainer}>
+      {hasDisconformity?
         <TouchableOpacity
           style={styles.buttonDisconformity}
           onPress={() => {
@@ -54,6 +69,8 @@ const DocumentViewer: React.FC<Props> = ({route, navigation}) => {
           <Text style={styles.textDisconformity}>Firma</Text>
           <Text style={styles.textDisconformity}>Disconforme</Text>
         </TouchableOpacity>
+           :null 
+          }
         <TouchableOpacity
           style={styles.buttonConformity}
           onPress={() => {

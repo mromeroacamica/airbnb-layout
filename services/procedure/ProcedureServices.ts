@@ -32,6 +32,31 @@ class ProcedureServices {
     const uriEncode = encodeURI(url);
     return uriEncode;
   }
+
+  async getPropertyOfProcessDefinition(processDefinitionId: string) {
+    const currentUser = SessionService.getCurrentUser();
+    const url =
+      config.baseUrl +
+      '/api/process-definitions/' +
+      processDefinitionId +
+      '/properties?include=values';
+    const headers = {
+      Authorization: `Bearer ${currentUser.token}`,
+      'Content-Type': 'application/json',
+    };
+    console.log(url);
+    console.log(headers);
+    const res = await HttpService.get(url, {headers: headers});
+    if (res == null) {
+      return;
+    }
+    if (res.status === 200) {
+      return res;
+    } else {
+      return res;
+    }
+  }
+
   public async getProcedures(
     filters = '',
     limit = 10,

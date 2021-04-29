@@ -57,6 +57,7 @@ const DocumentsNotSigned : React.FC<Props>= ({navigation, setDocuments}) => {
       navigation.navigate('DocumentViewer', {
         itemId: [value.id],
         otherParam:documentTitle,
+        processDefinitionIdentificator:value.processDefinitionIdentificator
       });
     }
   };

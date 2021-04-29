@@ -10,7 +10,8 @@ import Dashboard from './views/Dashboard/Dashboard';
 import DocumentsDashboard from './views/Documents/DocumentsDashboard';
 import DocumentsNotSigned from './views/Documents/DocumentsNotSigned';
 import DocumentsSigned from './views/Documents/DocumentsSigned';
-import DocumentViewer from './views/Documents/DocuentViewer';
+import DocumentViewer from './views/Documents/DocumentViewer';
+import DisconformitySign from './views/Documents/DisconformitySign';
 import PinConfirmation from './views/Documents/PinConfirmation';
 import ScreenHeader from './Components/ScreenHeader/ScreenHeader';
 import NotificationBell from './Components/notificationBell/notificationBell';
@@ -108,10 +109,21 @@ const Navigation = () => {
               <Stack.Screen
                 component={PinConfirmation}
                 options={({route}) => ({
-                  title: 'Firma ' + route.params.conformity,
+                  title:
+                    'Firma ' + route.params.conformity
+                      ? 'Conforme'
+                      : 'Disconforme',
                   headerRight: () => <NotificationBell />,
                 })}
                 name="PinConfirmation"
+              />
+              <Stack.Screen
+                component={DisconformitySign}
+                options={({route}) => ({
+                  title: 'Firma disconforme',
+                  headerRight: () => <NotificationBell />,
+                })}
+                name="DisconformitySign"
               />
             </Stack.Navigator>
           );
