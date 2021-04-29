@@ -15,6 +15,20 @@ class SessionService {
     this.currentUser = TokenServices.getToken();
     return this.currentUser;
   }
+  async getTokenInformation() {
+    const url = config.baseUrl + '/api/tokens/informations';
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + TokenServices.getToken().token,
+    };
+    const res = await HttpService.get(url, {headers: headers});
+    if (res.status === 200) {
+      const body = res;
+      return body;
+    } else if (res.status === 401) {
+      console.log('error');
+    }
+  }
   getTenant() {
     return this.tenant;
   }

@@ -9,7 +9,7 @@ import {
   faEdit,
 } from '@fortawesome/free-solid-svg-icons';
 import { Colors } from '../../assets/style/Colors';
-import { Utils } from '../../Shared/Utils';
+import SessionService from '../../services/session/SessionService';
 
 
 export interface Props{
@@ -24,19 +24,21 @@ const ProfileComponent: React.FC<Props> = ({navigation, setDocuments}) => {
   const [token, setToken]:any = useState('');
   const [photoUrl, setPhotoUrl] = useState('');
   const [initials, setInitials] = useState('');
-  const [genders, setGenders]=useState([]);
+  const [genders, setGenders]:Array<any>=useState([]);
+  useEffect(()=>{
+    getGenders()
+  },[])
 
   useEffect(() => {
     let isMounted = true;
     async function initEnvelopes() {
       const token = TokenServices.getToken();
-    console.log(token)
     setToken(token);
     setInitials(
       token.account.lastName.slice(0, 1) + token.account.firstName.slice(0, 1),
     );
     setPhotoUrl(AccountServices.getAccountPhotoURL(token.account.id,64));
-    await getGenders()
+    
     await getUserInformation()
       if (isMounted) {
         setInitLoaded(true);
@@ -47,41 +49,39 @@ const ProfileComponent: React.FC<Props> = ({navigation, setDocuments}) => {
       isMounted = false;
     };
     
-  }, []);
+  }, [genders]);
   const getGenders=async()=> {
     const gendersResponse = await AccountServices.getAllGenders();
-    const genders = gendersResponse.data.data.map((gender:any) => {
-      console.log(gender.id)
+    const gendersMap = gendersResponse.data.data.map((gender:any) => {
       return { id: gender.id, name: gender.attributes.name };
     });
-    setGenders(genders)
+    setGenders(gendersMap)
   }
   const getUserInformation =async()=> {
     const token = TokenServices.getToken();
-    console.log(token.account.id)
-    const resp = await AccountServices.getAccount(token.account.id);
-    console.log(resp)
-    if (resp.status !== 200) {
+    const resp = await SessionService.getTokenInformation();
+    const resp2 = await AccountServices.getAccount(token.account.id)
+    if (resp.status !== 200 || resp2.status !==200 ) {
       navigation.navigate('Config')
     }
 
     // Telefono
-    if (resp.data.data.attributes.phone != null) {
+    if (resp2.data.data.attributes.phone != null) {
     } else {
       token.account.phone = SIN_DEFINIR;
     }
 
     // Legajo
-    if (!resp.data.data.attributes.legajo) {
+    if (!resp2.data.data.attributes.legajo) {
       token.account.legajo = SIN_DEFINIR;
     }
 
     // Genero
-    if (resp.data.data.relationships.gender.data.data != null) {
-      token.account.genderId = resp.data.data.relationships.gender.data.data.id;
-      const gender:any = Utils.searchObjInArray(genders, 'id', token.account.genderId).obj;
+    if (resp2.data.data.relationships.gender.data != null) {
+      token.account.genderId = resp2.data.data.relationships.gender.data.id;
+      const gender:any = genders.filter((gender: { id: any; })=>gender.id===token.account.genderId)
       if(gender !== null){
-        token.account.genderName = gender.name;
+        token.account.genderName = gender[0].name;
       }
     } else {
       token.account.genderName = SIN_DEFINIR;
@@ -98,19 +98,18 @@ const ProfileComponent: React.FC<Props> = ({navigation, setDocuments}) => {
 
     // Ajustar el offset del timestamp
     if (token.account.birthdate != null) {
-      token.account.birthdate = new Date(
-        Utils.getLocalTimestamp(token.account.birthdate, -1)
-      );
+      token.account.birthdate = new Date(token.account.birthdate);
+      // token.account.birthdate= Utils.getDateFormat({date:token.account.birthdate,format:'Y/M/D'})
     }else{
       token.account.birthdate = SIN_DEFINIR
     }
     if (token.account.employeeSince != null) {
-      token.account.employeeSince = new Date(
-        Utils.getLocalTimestamp(token.account.employeeSince, -1)
-      );
+      token.account.employeeSince = new Date(token.account.employeeSince);
+      // token.account.employeeSince =Utils.getDateFormat({date:token.account.employeeSince,format:'Y/M/D'})
     }else{
       token.account.employeeSince = SIN_DEFINIR
     }
+    token.account.unit = resp.data.unit
     setToken(token)
   }
   return (
@@ -119,40 +118,49 @@ const ProfileComponent: React.FC<Props> = ({navigation, setDocuments}) => {
         {initLoaded?
         <View style={styles.profileContainer}>
           <ScrollView style={styles.scrollProfile}>
-            <View style={styles.pictureNameIconContainer}>
-              <View style={styles.iconTextContainer}>
-                  <RoundImage imageUrl={photoUrl} initials={initials} imageSize={64} />
-                  {token !== '' && (
-                    <Text style={styles.text}>
-                      {token.account.firstName} {token.account.lastName}
-                    </Text>
-                  )}
+            <View style={{padding:10}}>
+              <View style={styles.pictureNameIconContainer}>
+                <View style={styles.iconTextContainer}>
+                    <RoundImage imageUrl={photoUrl} initials={initials} imageSize={64} />
+                    {token !== '' && (
+                      <Text style={styles.text}>
+                        {token.account.firstName} {token.account.lastName}
+                      </Text>
+                    )}
+                </View>
+                <View>
+                    <FontAwesomeIcon
+                      icon={faEdit}
+                      style={styles.iconStyle}
+                      size={30}
+                    />
+                </View>
               </View>
-              <View>
-                  <FontAwesomeIcon
-                    icon={faEdit}
-                    style={styles.iconStyle}
-                    size={30}
-                  />
-              </View>
+              <Text style={styles.personalDataText}>DATOS PERSONALES</Text>
+              <Text style={styles.titleText}>Nombre</Text>
+              <Text style={styles.bodyText}>{token.account.firstName}</Text>
+              <Text style={styles.titleText}>Apellido</Text>
+              <Text style={styles.bodyText}>{token.account.lastName}</Text>
+              <Text style={styles.titleText}>Género</Text>
+              <Text style={styles.bodyText}>{token.account.genderName}</Text>
+              <Text style={styles.titleText}>Correo</Text>
+              <Text style={styles.bodyText}>{token.account.email}</Text>
+              <Text style={styles.titleText}>Fecha de Nacimiento</Text>
+              <Text style={styles.bodyText}>{token.account.birthdate}</Text>
+              <Text style={styles.titleText}>CUIL</Text>
+              <Text style={styles.bodyText}>{token.account.cuilCuit}</Text>
+              <Text style={styles.titleText}>Teléfono</Text>
+              <Text style={styles.bodyText}>{token.account.phone}</Text>
+              <Text style={styles.titleText}>Correo alternativo</Text>
+              <Text style={styles.bodyText}>{token.account.alternativeEmail}</Text>
+              <Text style={styles.personalDataText}>DATOS LABORALES</Text>
+              <Text style={styles.titleText}>Unidad organizacional</Text>
+              <Text style={styles.bodyText}>{token.account.unit.name}</Text>
+              <Text style={styles.titleText}>Legajo</Text>
+              <Text style={styles.bodyText}>{token.account.legajo}</Text>
+              <Text style={styles.titleText}>Fecha de ingreso</Text>
+              <Text style={styles.bodyText}>{token.account.employeeSince}</Text>
             </View>
-            <Text style={styles.personalDataText}>DATOS PERSONALES</Text>
-            <Text style={styles.titleText}>Nombre</Text>
-            <Text style={styles.bodyText}>{token.account.firstName}</Text>
-            <Text style={styles.titleText}>Apellido</Text>
-            <Text style={styles.bodyText}>{token.account.lastName}</Text>
-            <Text style={styles.titleText}>Género</Text>
-            <Text style={styles.bodyText}>{token.account.genderName}</Text>
-            <Text style={styles.titleText}>Correo</Text>
-            <Text style={styles.bodyText}>{token.account.email}</Text>
-            <Text style={styles.titleText}>Fecha de Nacimiento</Text>
-            <Text style={styles.bodyText}>{token.account.birthdate}</Text>
-            <Text style={styles.titleText}>CUIL</Text>
-            <Text style={styles.bodyText}>{token.account.cuilCuit}</Text>
-            <Text style={styles.titleText}>Teléfono</Text>
-            <Text style={styles.bodyText}>{token.account.phone}</Text>
-            <Text style={styles.titleText}>Correo alternativo</Text>
-            <Text style={styles.bodyText}>{token.account.alternativeEmail}</Text>
           </ScrollView>
         </View>
       :null}
@@ -172,7 +180,7 @@ const styles = StyleSheet.create({
     backgroundColor:'white',
     width:'100%',
     borderRadius: 5,
-    padding:10,
+    
   },
   pictureNameIconContainer:{
     flexDirection:'row',
