@@ -84,8 +84,10 @@ const DocumentsNotSigned : React.FC<Props>= ({navigation, setDocuments}) => {
     setReceipts([...receipts])
   };
   const signHandler = () => {
+    const listIdToSign = [...checkedIdList]
+    setCheckedIdList([])
     navigation.navigate('PinConfirmation', {
-      itemId: checkedIdList,
+      itemId: listIdToSign,
       conformity: 'true',
     });
   };
@@ -166,7 +168,7 @@ const DocumentsNotSigned : React.FC<Props>= ({navigation, setDocuments}) => {
             })}
           </ScrollView>
         </View>
-        {multiSelect?
+        {multiSelect && checkedIdList.length>0?
           <View>
             <TouchableOpacity style={styles.buttonConformity} onPress={() => {
             signHandler();

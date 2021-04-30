@@ -32,7 +32,7 @@ class SignServices {
     certificatePem: any,
     conformity: boolean,
     propertyId?: string,
-    reason?: string,
+    reason?: any,
     reasonDescription?: string,
   ) {
     const token = await TokenServices.getToken().token;
@@ -49,10 +49,9 @@ class SignServices {
     ];
     if (propertyId) {
       formData.push({name: 'propertyId', data: propertyId});
-      formData.push({name: 'reason', data: reason});
+      formData.push({name: 'reason', data: reason.id});
       formData.push({name: 'reasonDescription', data: reasonDescription});
     }
-    console.log(formData);
     try {
       const res = await RNFetchBlob.fetch(
         'POST',
@@ -74,7 +73,6 @@ class SignServices {
   async getCertFile() {
     const token = await TokenServices.getToken().token;
     const account = SessionService.getCurrentUser();
-    console.log('esto es account', account);
     const accountId = account.account.id;
     const url =
       config.baseUrl +
@@ -136,7 +134,6 @@ class SignServices {
       }
 
       const pkcs12Der = forge.util.decode64(certFile);
-      console.log(pkcs12Der);
       const pkcs12Asn1 = forge.asn1.fromDer(pkcs12Der);
 
       const pkcs12 = forge.pkcs12.pkcs12FromAsn1(pkcs12Asn1, false, password);

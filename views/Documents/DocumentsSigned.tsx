@@ -40,7 +40,6 @@ const DocumentsSigned : React.FC<Props>= ({navigation, setDocuments}) => {
       setCheckedIdList([...checkedIdList,receipts[index].id])
     } else {
         setCheckedIdList(checkedIdList.filter(id=>id != receipts[index].id))
-        console.log('esto es checkidList',checkedIdList)
         if(checkedIdList.length < 2){
           setMultiSelect(false)
         }
@@ -56,6 +55,7 @@ const DocumentsSigned : React.FC<Props>= ({navigation, setDocuments}) => {
       navigation.navigate('DocumentViewer', {
         itemId: [value.id],
         otherParam:documentTitle,
+        signed:true
       });
     }
   };
@@ -66,7 +66,6 @@ const DocumentsSigned : React.FC<Props>= ({navigation, setDocuments}) => {
     const filter = `&filter[documentState]=FINISHED&filter[roleId]=${roleId}&sort=-creationDate`;
     async function initDocumentNotSigned() {
       const res = await ProcedureServices.getProcedures(filter, 0, 0);
-      console.log(res)
       if (isMounted && res.length > 0) {
         for (let document of res) {
           document.selected = false;

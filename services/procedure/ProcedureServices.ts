@@ -22,7 +22,6 @@ class ProcedureServices {
   }
   public getImageUrl(documentId: string, disableCache = false) {
     const token = TokenServices.getToken();
-    console.log(token);
     let url =
       config.baseUrl +
       `/api/document-downloads/${documentId}/images?token=${token.token}`;
@@ -44,8 +43,6 @@ class ProcedureServices {
       Authorization: `Bearer ${currentUser.token}`,
       'Content-Type': 'application/json',
     };
-    console.log(url);
-    console.log(headers);
     const res = await HttpService.get(url, {headers: headers});
     if (res == null) {
       return;

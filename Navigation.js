@@ -109,10 +109,7 @@ const Navigation = () => {
               <Stack.Screen
                 component={PinConfirmation}
                 options={({route}) => ({
-                  title:
-                    'Firma ' + route.params.conformity
-                      ? 'Conforme'
-                      : 'Disconforme',
+                  title: 'Firmar',
                   headerRight: () => <NotificationBell />,
                 })}
                 name="PinConfirmation"
@@ -120,7 +117,7 @@ const Navigation = () => {
               <Stack.Screen
                 component={DisconformitySign}
                 options={({route}) => ({
-                  title: 'Firma disconforme',
+                  title: 'Firmar disconforme',
                   headerRight: () => <NotificationBell />,
                 })}
                 name="DisconformitySign"

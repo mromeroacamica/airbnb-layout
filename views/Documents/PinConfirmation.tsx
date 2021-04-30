@@ -14,12 +14,11 @@ import SpinnerComponent from '../../Components/Spinner/Spinner.component';
 
 export interface Props{
   navigation:any,
-  route:any
+  route:any,
 }
 
 const PinConfirmation : React.FC<Props> = ({route,navigation}) => {
-  const {itemId,conformity}=route.params
-  console.log(route)
+  const {itemId,conformity,propertyIdDisconformity,reason,reasonDescription}=route.params
     const [showPin, setShowPin] = useState(false)
     const [pinPassword, setPinPassword] = useState('');
     const [showSpinner, setShowSpinner] = useState(false);
@@ -27,20 +26,16 @@ const PinConfirmation : React.FC<Props> = ({route,navigation}) => {
     const submitPin=async ()=>{
       setShowSpinner(true)
       const certificate=await SignServices.getCertFile()
-      console.log('esto es certificate',certificate)
       const certPem = await SignServices.getCertPem(pinPassword,certificate)
-      console.log(certPem)
       let documentHash
       let documentHashSigned
       let endSign
       if(certPem){
         for(let item of itemId){
-          documentHash = await SignServices.getDocumentHash(item,certPem.pem,conformity)
-          console.log(documentHash)
+          documentHash = await SignServices.getDocumentHash(item,certPem.pem,conformity,propertyIdDisconformity,reason,reasonDescription)
           if (documentHash){
             const documentHashJson = documentHash.json()
             documentHashSigned= await SignServices.signHash(pinPassword,documentHashJson.hash,certificate)
-          console.log(documentHashSigned)
   
             if(documentHashSigned){
               endSign = await SignServices.endSign(item,documentHashSigned,documentHashJson.token)

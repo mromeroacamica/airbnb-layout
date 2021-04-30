@@ -13,7 +13,6 @@ const NotificationsComponent: React.FC<Props> = ({navigation, setDocuments}) => 
   const [notificationEnable, setNotificationEnable] = useState(true);
   const toggleSwitch = () => setNotificationEnable(!notificationEnable);
   const clickHandler = () => {
-    console.log('hola esto es click');
   };
   return (
     <>

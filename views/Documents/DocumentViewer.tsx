@@ -10,7 +10,7 @@ export interface Props{
 }
 
 const DocumentViewer: React.FC<Props> = ({route, navigation}) => {
-  const {itemId, otherParam,processDefinitionIdentificator} = route.params;
+  const {itemId, otherParam,processDefinitionIdentificator,signed} = route.params;
   const [uri, setUri] = useState('');
   const [hasDisconformity, setHasDisconformity] = useState(false);
   const signHandler = (conformity:boolean) => {
@@ -33,7 +33,10 @@ const DocumentViewer: React.FC<Props> = ({route, navigation}) => {
     let isMounted = true
     async function initEnvelopes(){
       const res = await ProcedureServices.getImageUrl(itemId,true)
-      const respDisconformityValues = await ProcedureServices.getPropertyOfProcessDefinition(processDefinitionIdentificator)
+      let respDisconformityValues
+      if(!signed){
+        respDisconformityValues = await ProcedureServices.getPropertyOfProcessDefinition(processDefinitionIdentificator)
+      }
       if(isMounted){
         if(respDisconformityValues.data.data[0]){
          setHasDisconformity(true)   

@@ -61,7 +61,6 @@ const ProfileComponent: React.FC<Props> = ({navigation, setDocuments}) => {
     const token = TokenServices.getToken();
     const resp = await SessionService.getTokenInformation();
     const resp2 = await AccountServices.getAccount(token.account.id)
-    console.log(resp,resp2)
     if (resp.status !== 200 || resp2.status !==200 ) {
       navigation.navigate('Config')
     }

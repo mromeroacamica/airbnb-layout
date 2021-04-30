@@ -60,7 +60,6 @@ class AccountServices {
       Authorization: `Bearer ${TokenServices.getToken().token}`,
     };
     const res: any = await HttpService.get(url, {headers, params});
-    console.log('esto es res de account', res);
     return res;
   }
 }
