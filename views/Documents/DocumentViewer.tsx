@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, Image, ScrollView} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, Image, ScrollView, Share,Alert} from 'react-native';
 import ProcedureServices from '../../services/procedure/ProcedureServices'
 import PhotoView from 'react-native-photo-view-ex'; 
 
@@ -29,6 +29,25 @@ const DocumentViewer: React.FC<Props> = ({route, navigation}) => {
       });
     }
   };
+  const onShare = async (content:any,options:any)=>{
+    try {
+      const result = await Share.share({
+        message:
+          'React Native | A framework for building native apps using React',
+      });
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          // shared with activity type of result.activityType
+        } else {
+          // shared
+        }
+      } else if (result.action === Share.dismissedAction) {
+        // dismissed
+      }
+    } catch (error) {
+      Alert.alert(error.message);
+    }
+  }
   useEffect(()=>{
     let isMounted = true
     async function initEnvelopes(){
@@ -38,7 +57,7 @@ const DocumentViewer: React.FC<Props> = ({route, navigation}) => {
         respDisconformityValues = await ProcedureServices.getPropertyOfProcessDefinition(processDefinitionIdentificator)
       }
       if(isMounted){
-        if(respDisconformityValues.data.data[0]){
+        if(!signed && respDisconformityValues.data.data[0]){
          setHasDisconformity(true)   
         }
         setUri(res)
@@ -74,6 +93,7 @@ const DocumentViewer: React.FC<Props> = ({route, navigation}) => {
         </TouchableOpacity>
            :null 
           }
+          {!signed ?
         <TouchableOpacity
           style={styles.buttonConformity}
           onPress={() => {
@@ -82,6 +102,16 @@ const DocumentViewer: React.FC<Props> = ({route, navigation}) => {
           <Text style={styles.textConformity}>Firma</Text>
           <Text style={styles.textConformity}>Conforme</Text>
         </TouchableOpacity>
+        :null}
+        {signed ?
+        <TouchableOpacity
+          style={styles.buttonDownload}
+          onPress={() => {
+            onShare('hola','chau');
+          }}>
+          <Text style={styles.textConformity}>DESCARGAR</Text>
+        </TouchableOpacity>
+        :null}
       </View>
     </View>
   );
@@ -124,6 +154,14 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     margin: 0,
   },
+  buttonDownload: {
+    flexGrow: 1,
+    alignItems: 'center',
+    backgroundColor: '#3f51b5',
+    height: 50,
+    padding: 10,
+  },
+  
 });
 
 export default DocumentViewer;
