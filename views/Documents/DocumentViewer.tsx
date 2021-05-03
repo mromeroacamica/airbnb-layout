@@ -33,7 +33,7 @@ const DocumentViewer: React.FC<Props> = ({route, navigation}) => {
     try {
       const result = await Share.share({
         message:
-          'React Native | A framework for building native apps using React',
+          'Descargar documento',
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {

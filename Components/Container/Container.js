@@ -9,12 +9,15 @@ import {
   faComments,
   faCog,
 } from '@fortawesome/free-solid-svg-icons';
+import {CommonActions} from '@react-navigation/routers';
 
 const ContainerScreen = (props) => {
   const {route, setRoute} = useContext(RouteContext);
   const setDocuments = props.setDocuments;
   const navigateTo = (route) => {
-    props.navigation.navigate(route);
+    props.navigation.dispatch(
+      CommonActions.reset({index: 0, routes: [{name: route}]}),
+    );
   };
   return (
     <>
@@ -22,8 +25,7 @@ const ContainerScreen = (props) => {
       <View style={styles.footerContainer}>
         <TouchableOpacity
           onPress={() => {
-            setRoute('documents');
-            navigateTo('Documentos');
+            navigateTo('Documents');
           }}
           style={styles.botonSubmit}>
           <View style={styles.iconTextContainer}>
@@ -73,10 +75,7 @@ const ContainerScreen = (props) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            setRoute('config');
-            if (navigateTo('Config')) {
-              navigateTo('Config');
-            }
+            navigateTo('Config');
           }}
           style={styles.botonSubmit}>
           <View style={styles.iconTextContainer}>

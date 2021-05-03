@@ -32,7 +32,7 @@ const PinConfirmation : React.FC<Props> = ({route,navigation}) => {
       let endSign
       if(certPem){
         for(let item of itemId){
-          documentHash = await SignServices.getDocumentHash(item,certPem.pem,conformity,propertyIdDisconformity,reason,reasonDescription)
+          documentHash = await SignServices.getDocumentHash(item,certPem.pem,conformity,propertyIdDisconformity,reason,reasonDescription,'8192', 'SHA256')
           if (documentHash){
             const documentHashJson = documentHash.json()
             documentHashSigned= await SignServices.signHash(pinPassword,documentHashJson.hash,certificate)

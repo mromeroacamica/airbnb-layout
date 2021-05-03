@@ -28,6 +28,7 @@ const UserLogin = ({submitUser}) => {
         <Text style={styles.label}>Correo electrónico:</Text>
         <TextInput
           style={styles.input}
+          keyboardType={'email-address'}
           onChangeText={(text) => {
             saveUser(text);
           }}

@@ -34,6 +34,8 @@ class SignServices {
     propertyId?: string,
     reason?: any,
     reasonDescription?: string,
+    signatureSize?: string,
+    digestAlgorithm?: string,
   ) {
     const token = await TokenServices.getToken().token;
     const url =
@@ -52,6 +54,9 @@ class SignServices {
       formData.push({name: 'reason', data: reason.id});
       formData.push({name: 'reasonDescription', data: reasonDescription});
     }
+    formData.push({name: 'signatureSize', data: signatureSize});
+    formData.push({name: 'digestAlgorithm', data: digestAlgorithm});
+
     try {
       const res = await RNFetchBlob.fetch(
         'POST',
