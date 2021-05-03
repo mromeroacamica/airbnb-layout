@@ -1,7 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, Image, ScrollView, Share,Alert} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, Image, ScrollView, Share,Alert, PermissionsAndroid} from 'react-native';
 import ProcedureServices from '../../services/procedure/ProcedureServices'
 import PhotoView from 'react-native-photo-view-ex'; 
+import RNFetchBlob from 'rn-fetch-blob';
+import config from '../../config/env/environment';
+import SessionService from '../../services/session/SessionService';
 
 export interface Props{
   navigation:any,
@@ -29,11 +32,54 @@ const DocumentViewer: React.FC<Props> = ({route, navigation}) => {
       });
     }
   };
-  const onShare = async (content:any,options:any)=>{
+  const getPdf = async (documentId: string) => {
+    const currentUser = SessionService.getCurrentUser()
+    let response
+    const PATH_OF_FILE = `${
+      RNFetchBlob.fs.dirs.DownloadDir
+    }/JornalYa/${otherParam.replace(/\//g, '-')}/${itemId + 1}_${otherParam}.pdf`;
+    const url = `${config.baseUrl}/api/document-downloads/${documentId}?token=${currentUser.token}`;
+   const fileFetch = await RNFetchBlob.config({
+      path:PATH_OF_FILE
+    })
+      .fetch('GET', url)
+      
+      return fileFetch
+  };
+  const requestStoragePermission = async (
+    id: string,
+  ) => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          title: 'Signbox App Permisos de Almacenamiento',
+          message:
+            'Signbox necesita acceder al almacenamiento' +
+            'para guardar el pdf.',
+          buttonNeutral: 'Preguntame más tarde',
+          buttonNegative: 'Cancelar',
+          buttonPositive: 'OK',
+        },
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const file = await getPdf(id[0]);
+        return file
+      } else {
+        Alert.alert('Permisos de almacenamiento necesarios para descargar');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+  
+  const onShare = async ()=>{
+   const file:any = await requestStoragePermission(itemId)
+   console.log('esto es data',file.data)
     try {
       const result = await Share.share({
-        message:
-          'Descargar documento',
+        url:`file://${file.data}`,
+        title: 'Download PDF',
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -107,7 +153,7 @@ const DocumentViewer: React.FC<Props> = ({route, navigation}) => {
         <TouchableOpacity
           style={styles.buttonDownload}
           onPress={() => {
-            onShare('hola','chau');
+            onShare();
           }}>
           <Text style={styles.textConformity}>DESCARGAR</Text>
         </TouchableOpacity>

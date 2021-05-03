@@ -14,10 +14,10 @@ class Observable<T> {
     );
   }
   public notify(value: T) {
+    this.value = value;
     this.observers.forEach((obs) => {
       obs(value);
     });
-    this.value = value;
   }
   public getValue() {
     return this.value;
