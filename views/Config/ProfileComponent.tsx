@@ -65,8 +65,6 @@ const ProfileComponent: React.FC<Props> = ({navigation, setDocuments}) => {
     if (resp.status !== 200 || resp2.status !==200 ) {
       navigation.navigate('Config')
     }
-    console.log('esto',resp)
-    console.log('hola',resp2)
 
     // Telefono
     if (resp2.data.data.attributes.phone != null) {
