@@ -78,6 +78,8 @@ const DocumentsSigned : React.FC<Props>= ({navigation, setDocuments}) => {
     initDocumentNotSigned();
   }, []);
   const longPressHandler = (condition:boolean, index:number) => {
+    console.log('Long press')
+    return
     if(checkedIdList.length >=1){
       return
     }else if(condition && checkedIdList.length == 1){

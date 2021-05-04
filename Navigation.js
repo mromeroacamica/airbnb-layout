@@ -17,6 +17,8 @@ import ScreenHeader from './Components/ScreenHeader/ScreenHeader';
 import NotificationBell from './Components/notificationBell/notificationBell';
 import ConfigComponent from './views/Config/ConfigComponent';
 import HelpComponent from './views/Config/HelpComponent';
+import CredentialsComponent from './views/Config/CredentialsComponent';
+import PasswordConfig from './views/Config/PasswordConfig';
 import ProfileComponent from './views/Config/ProfileComponent';
 import NotificationsComponent from './views/Config/NotificationsComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -153,6 +155,32 @@ const Navigation = () => {
           }}
           name="Help"
           component={HelpComponent}
+        />
+        <Stack.Screen
+          options={{
+            title: (
+              <View>
+                <Text style={styles.subtitleText}>Configuración</Text>
+                <Text style={styles.titleText}>/Credenciales</Text>
+              </View>
+            ),
+            headerRight: () => <NotificationBell />,
+          }}
+          name="Credentials"
+          component={CredentialsComponent}
+        />
+        <Stack.Screen
+          options={{
+            title: (
+              <View>
+                <Text style={styles.subtitleText}>Credenciales</Text>
+                <Text style={styles.titleText}>/Contraseña</Text>
+              </View>
+            ),
+            headerRight: () => <NotificationBell />,
+          }}
+          name="PasswordConfig"
+          component={PasswordConfig}
         />
         <Stack.Screen
           options={{

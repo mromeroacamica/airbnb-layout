@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-import { Colors } from '../../assets/style/Colors';
 import {
   View,
   StyleSheet,
@@ -7,6 +6,7 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  ScrollView
 } from 'react-native';
 import SessionService from '../../services/session/SessionService';
 import ProcedureServices from '../../services/procedure/ProcedureServices'
@@ -79,43 +79,45 @@ const DisconformitySign : React.FC<Props> = ({route,navigation}) => {
     {!isLoaded ?
     <SpinnerComponent size={100}/>
   :
-  <View style={styles.container}>
-    <View style={{width:'100%'}}>
-      <Text>Selecciona un motivo</Text>
-    </View>
-    <View style={styles.pickerContainer}>
-      <Picker
-      selectedValue={reason}
-      style={styles.picker}
-      onValueChange={(itemValue) => handlePicker(itemValue)}
-      >
-        <Picker.Item key={''} label={'Seleccione un motivo'} value={''} />
+  <ScrollView>
+    <View style={styles.container}>
+      <View style={{width:'100%'}}>
+        <Text>Selecciona un motivo</Text>
+      </View>
+      <View style={styles.pickerContainer}>
+        <Picker
+        selectedValue={reason}
+        style={styles.picker}
+        onValueChange={(itemValue) => handlePicker(itemValue)}
+        >
+          <Picker.Item key={''} label={'Seleccione un motivo'} value={''} />
 
-      {disconformityValues.map((discValue: any)=>{
-        return(
-          <Picker.Item key={discValue.id} label={discValue.attributes.value} value={discValue} />
-        )
-      })}
-      </Picker>
+        {disconformityValues.map((discValue: any)=>{
+          return(
+            <Picker.Item key={discValue.id} label={discValue.attributes.value} value={discValue} />
+          )
+        })}
+        </Picker>
+      </View>
+      {allowDescription?
+      <View style={{width:'100%'}}>
+          <Text>Ingresar una descripción</Text>
+          <TextInput
+                  onChangeText={(text)=>{
+                      setReasonDescription(text)
+                  }} 
+                  value={reasonDescription}
+                  maxLength={140}
+                  style={styles.inputDescription}
+                  textAlignVertical={'top'}
+                  editable={reason !== ''}
+                  multiline={true}
+          />
+      </View>
+      :
+      null}
     </View>
-    {allowDescription?
-    <View style={{width:'100%'}}>
-        <Text>Ingresar una descripción</Text>
-        <TextInput
-                onChangeText={(text)=>{
-                    setReasonDescription(text)
-                }} 
-                value={reasonDescription}
-                maxLength={140}
-                style={styles.inputDescription}
-                textAlignVertical={'top'}
-                editable={reason !== ''}
-                multiline={true}
-        />
-    </View>
-    :
-    null}
-  </View>
+  </ScrollView>
     }
     {checkInput()?
     <View>

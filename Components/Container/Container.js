@@ -4,7 +4,7 @@ import RouteContext from '../../context/RouteContext';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faFileAlt,
-  faPlaneDeparture,
+  faCalendarAlt,
   faFileInvoiceDollar,
   faComments,
   faCog,
@@ -31,7 +31,7 @@ const ContainerScreen = (props) => {
           <View style={styles.iconTextContainer}>
             <FontAwesomeIcon
               icon={faFileAlt}
-              style={styles.iconStyle2}
+              style={styles.iconStyle}
               size={22}
             />
             <Text style={styles.text}>Documentos</Text>
@@ -39,11 +39,12 @@ const ContainerScreen = (props) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setRoute('licencias')}
-          style={styles.botonSubmit}>
+          style={styles.botonSubmit}
+          disabled={true}>
           <View style={styles.iconTextContainer}>
             <FontAwesomeIcon
-              icon={faPlaneDeparture}
-              style={styles.iconStyle2}
+              icon={faCalendarAlt}
+              style={styles.iconDisableStyle}
               size={22}
             />
             <Text style={styles.text}>Licencias</Text>
@@ -51,11 +52,12 @@ const ContainerScreen = (props) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setRoute('documents')}
-          style={styles.botonSubmit}>
+          style={styles.botonSubmit}
+          disabled={true}>
           <View style={styles.iconTextContainer}>
             <FontAwesomeIcon
               icon={faFileInvoiceDollar}
-              style={styles.iconStyle2}
+              style={styles.iconDisableStyle}
               size={22}
             />
             <Text style={styles.text}>Gastos y Viáticos</Text>
@@ -63,11 +65,12 @@ const ContainerScreen = (props) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => setRoute('documents')}
-          style={styles.botonSubmit}>
+          style={styles.botonSubmit}
+          disabled={true}>
           <View style={styles.iconTextContainer}>
             <FontAwesomeIcon
               icon={faComments}
-              style={styles.iconStyle2}
+              style={styles.iconDisableStyle}
               size={22}
             />
             <Text style={styles.text}>Consultas</Text>
@@ -79,7 +82,7 @@ const ContainerScreen = (props) => {
           }}
           style={styles.botonSubmit}>
           <View style={styles.iconTextContainer}>
-            <FontAwesomeIcon icon={faCog} style={styles.iconStyle2} size={22} />
+            <FontAwesomeIcon icon={faCog} style={styles.iconStyle} size={22} />
             <Text style={styles.text}>Configuración</Text>
           </View>
         </TouchableOpacity>
@@ -105,8 +108,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  iconStyle2: {
+  iconStyle: {
     color: '#3f51b5',
+  },
+  iconDisableStyle: {
+    color: '#7b85cc',
   },
   text: {
     color: '#3f51b5',

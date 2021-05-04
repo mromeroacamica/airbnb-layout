@@ -82,7 +82,7 @@ const ConfigComponent = ({navigation, setDocuments}) => {
               </View>
             </CardList>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigateTo('Help')}>
+          <TouchableOpacity onPress={() => navigateTo('Credentials')}>
             <CardList propStyles={styles.card2}>
               <View style={styles.iconTextContainer}>
                 <FontAwesomeIcon
