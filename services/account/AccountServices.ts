@@ -62,5 +62,21 @@ class AccountServices {
     const res: any = await HttpService.get(url, {headers, params});
     return res;
   }
+  async updatePassword(oldPassword: string, newPassword: string) {
+    console.log(TokenServices.getToken());
+    const url = config.baseUrl + '/api/change-password';
+    const headers = {
+      'Content-Type': 'application/vnd.api+json',
+      Authorization: `Bearer ${TokenServices.getToken().token}`,
+    };
+    const body = {oldPassword, newPassword};
+    const res = await HttpService.post(url, body, {headers});
+    console.log(res);
+    if (res.status === 200) {
+      return res;
+    } else {
+      return false;
+    }
+  }
 }
 export default new AccountServices();

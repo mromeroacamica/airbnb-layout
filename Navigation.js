@@ -19,6 +19,9 @@ import ConfigComponent from './views/Config/ConfigComponent';
 import HelpComponent from './views/Config/HelpComponent';
 import CredentialsComponent from './views/Config/CredentialsComponent';
 import PasswordConfig from './views/Config/PasswordConfig';
+import PinConfigConfig from './views/Config/PinConfig';
+import SetPinConfig from './views/Config/SetPin';
+import ConfirmPasswordConfig from './views/Config/ConfirmPassword';
 import ProfileComponent from './views/Config/ProfileComponent';
 import NotificationsComponent from './views/Config/NotificationsComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -207,6 +210,30 @@ const Navigation = () => {
           }}
           name="Notifications"
           component={NotificationsComponent}
+        />
+        <Stack.Screen
+          component={PinConfigConfig}
+          options={({route}) => ({
+            title: 'Configurar PIN',
+            headerTitleAlign: 'center',
+          })}
+          name="PinConfig"
+        />
+        <Stack.Screen
+          component={SetPinConfig}
+          options={({route}) => ({
+            title: 'Configurar PIN',
+            headerTitleAlign: 'center',
+          })}
+          name="SetPin"
+        />
+        <Stack.Screen
+          component={ConfirmPasswordConfig}
+          options={({route}) => ({
+            title: 'Confirmar contraseña',
+            headerTitleAlign: 'center',
+          })}
+          name="ConfirmPassword"
         />
       </Stack.Navigator>
     );

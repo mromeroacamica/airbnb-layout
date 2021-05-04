@@ -1,10 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Text, TouchableOpacity, TextInput, ScrollView, Alert} from 'react-native';
+import {View, StyleSheet, Text, TouchableOpacity, TextInput, ScrollView, Alert, ActivityIndicator} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faExclamationCircle, faEye
 } from '@fortawesome/free-solid-svg-icons';
 import { Colors } from '../../assets/style/Colors';
+import AccountServices from '../../services/account/AccountServices'
+import SessionService from '../../services/session/SessionService';
+import TokenServices from '../../services/token/TokenServices';
 
 
 export interface Props{
@@ -17,20 +20,38 @@ const PasswordConfig: React.FC<Props> = ({navigation, setDocuments}) => {
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [inProcess, setInProcess] = useState(false);
 
 
     const navigateTo = (screen:string) => {
         navigation.navigate(screen);
       };
-    const updatePassword = (oldPW:string, newPW:string, confirmPW:string )=>{
+    const updatePassword = async (oldPW:string, newPW:string, confirmPW:string )=>{
+        setInProcess(true)
         const validatePassword = passwordValidation(newPW,confirmPW)
         if(validatePassword){
             console.log('la password esta bien')
+            const resUpdate= await AccountServices.updatePassword(oldPW, newPW)
+            if(resUpdate){
+                const token = TokenServices.getToken()
+                const resSession = await SessionService.logIn(token.account.email, newPW)
+                if(resSession.status === 200){
+                    const store = await TokenServices.setToken(resSession.data);
+                    Alert.alert('Cambio Contraseña', 'La contraseña se ha actualizado correctamente.', [
+                        {text: 'Confirmar', onPress: () => navigateTo('Credentials')},
+                      ]);    
+                }else{
+                    Alert.alert('Cambio Contraseña', 'La contraseña se ha actualizado correctamente.', [
+                        {text: 'Confirmar', onPress: () => TokenServices.setToken(null)},
+                      ]);
+                }
+            }
         }else{
             Alert.alert('Contraseña incorrecta', 'La contraseña debe contener entre 9 y 16 caracteres. Debe contar por lo menos con una letra mayúscula, una letra minúscula, un carácter especial y un número.', [
                 {text: 'Confirmar', onPress: () => console.log('Close')},
               ]);
         }
+        setInProcess(false)
     }
     const passwordValidation = (newPW:string, confirmPW:string)=>{
         const regexUpperCase = (/.*[A-Z].*/) 
@@ -51,6 +72,11 @@ const PasswordConfig: React.FC<Props> = ({navigation, setDocuments}) => {
   return (
     <>
     <View style={{backgroundColor:Colors.background, flex:1}}>
+        {inProcess?
+        <View style={{flex:1, justifyContent:'center'}}>
+            <ActivityIndicator size="large" color={Colors.primary} />
+        </View>
+    :
         <View style={styles.card}>
             <ScrollView style={{flex:1}}>
                 <View style={{alignItems:'center', marginTop:10}}>
@@ -151,6 +177,7 @@ const PasswordConfig: React.FC<Props> = ({navigation, setDocuments}) => {
             </View>)
             :null}
         </View>
+    }
     </View>
     </>
   );

@@ -41,7 +41,7 @@ const CredentialsComponent: React.FC<Props> = ({navigation, setDocuments}) => {
             </TouchableOpacity>
           </View>
           <View >
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigateTo('PinConfig')}>
             <View style={[styles.lineBottomBottom,, styles.paddingBottom]}>
                 <View style={[styles.cardWrapper]}>
                   <View style={styles.textWrapper}>
