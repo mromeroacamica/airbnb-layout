@@ -12,6 +12,8 @@ target 'layouts' do
 
   pod 'RNCPicker', :path => '../node_modules/@react-native-community/picker'
 
+  pod 'RNDateTimePicker', :path => '../node_modules/@react-native-community/datetimepicker'
+
   target 'layoutsTests' do
     inherit! :complete
     # Pods for testing

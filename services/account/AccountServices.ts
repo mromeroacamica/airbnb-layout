@@ -78,5 +78,41 @@ class AccountServices {
       return false;
     }
   }
+  async updateMyAccount(
+    accountId: string,
+    modifiedAttributes: object,
+    genderId?: string,
+  ) {
+    const url = config.baseUrl + '/api/accounts/' + accountId;
+    const headers = {
+      'Content-Type': 'application/vnd.api+json',
+      Authorization: `Bearer ${TokenServices.getToken().token}`,
+    };
+    const body: any = {
+      data: {
+        type: 'accounts',
+        id: accountId,
+        attributes: modifiedAttributes,
+      },
+    };
+    if (genderId) {
+      body.data.relationships = {
+        gender: {
+          data: {
+            id: genderId,
+            type: 'genders',
+          },
+        },
+      };
+    }
+    console.log('esto es el body', body, url);
+    const res = await HttpService.patch(url, body, {headers});
+    console.log(res);
+    if (res.status === 200) {
+      return res;
+    } else {
+      return false;
+    }
+  }
 }
 export default new AccountServices();

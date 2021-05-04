@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Text, ScrollView} from 'react-native';
+import {View, StyleSheet, Text, ScrollView,TouchableOpacity} from 'react-native';
 import ContainerScreen from '../../Components/Container/Container';
 import RoundImage from '../../Components/RoundImage/RoundImage';
 import TokenServices from '../../services/token/TokenServices';
@@ -10,6 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Colors } from '../../assets/style/Colors';
 import SessionService from '../../services/session/SessionService';
+import { Utils } from '../../Shared/Utils';
 
 
 export interface Props{
@@ -64,9 +65,12 @@ const ProfileComponent: React.FC<Props> = ({navigation, setDocuments}) => {
     if (resp.status !== 200 || resp2.status !==200 ) {
       navigation.navigate('Config')
     }
+    console.log('esto',resp)
+    console.log('hola',resp2)
 
     // Telefono
     if (resp2.data.data.attributes.phone != null) {
+      token.account.phone = resp2.data.data.attributes.phone
     } else {
       token.account.phone = SIN_DEFINIR;
     }
@@ -89,24 +93,22 @@ const ProfileComponent: React.FC<Props> = ({navigation, setDocuments}) => {
     }
 
     // Correo Alternativo
-    if (token.account.alternativeEmail == null || token.account.alternativeEmail === '') {
+    if (resp.data.account.alternativeEmail !== null || token.account.alternativeEmail !== '') {
+    token.account.alternativeEmail = resp.data.account.alternativeEmail
+    }else{
       token.account.alternativeEmail = SIN_DEFINIR;
     }
 
-    // token.account.employeeSince = Utils.normalizeDate(token.account.employeeSince);
-    // token.account.birthdate = Utils.normalizeDate(token.account.birthdate);
-
     // Ajustar el offset del timestamp
     if (resp2.data.data.attributes.birthdate != null) {
-      token.account.birthdate = new Date(token.account.birthdate);
-      // token.account.birthdate= Utils.getDateFormat({date:token.account.birthdate,format:'Y/M/D'})
+      token.account.birthdate = new Date(resp2.data.data.attributes.birthdate);
+      token.account.birthdate= Utils.getDateFormat({date:token.account.birthdate,format:'Y/M/D'})
     }else{
       token.account.birthdate = SIN_DEFINIR
     }
     if (resp2.data.data.attributes.employeeSince != null) {
-      token.account.employeeSince = SIN_DEFINIR;
-      // token.account.employeeSince = new Date(token.account.employeeSince);
-      // token.account.employeeSince =Utils.getDateFormat({date:token.account.employeeSince,format:'Y/M/D'})
+      token.account.employeeSince = new Date(resp2.data.data.attributes.employeeSince);
+      token.account.employeeSince= Utils.getDateFormat({date:token.account.employeeSince,format:'Y/M/D'})
     }else{
       token.account.employeeSince = SIN_DEFINIR
     }
@@ -130,11 +132,13 @@ const ProfileComponent: React.FC<Props> = ({navigation, setDocuments}) => {
                     )}
                 </View>
                 <View>
+                  <TouchableOpacity onPress={()=>navigation.navigate('ProfileEdit')}>
                     <FontAwesomeIcon
                       icon={faEdit}
                       style={styles.iconStyle}
                       size={30}
                     />
+                  </TouchableOpacity>
                 </View>
               </View>
               <Text style={styles.personalDataText}>DATOS PERSONALES</Text>

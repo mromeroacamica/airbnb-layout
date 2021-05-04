@@ -148,7 +148,8 @@ const styles = StyleSheet.create({
   },
   picker:{
     width:'100%',
-    backgroundColor:'white'
+    color:'#747474'
+
   },
   inputDescription:{
       width:'100%',

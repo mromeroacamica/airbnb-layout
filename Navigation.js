@@ -23,6 +23,7 @@ import PinConfigConfig from './views/Config/PinConfig';
 import SetPinConfig from './views/Config/SetPin';
 import ConfirmPasswordConfig from './views/Config/ConfirmPassword';
 import ProfileComponent from './views/Config/ProfileComponent';
+import ProfileEdit from './views/Config/ProfileEdit';
 import NotificationsComponent from './views/Config/NotificationsComponent';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Colors} from './assets/style/Colors';
@@ -197,6 +198,19 @@ const Navigation = () => {
           }}
           name="Profile"
           component={ProfileComponent}
+        />
+        <Stack.Screen
+          options={{
+            title: (
+              <View>
+                <Text style={styles.subtitleText}>Perfil</Text>
+                <Text style={styles.titleText}>/Editar</Text>
+              </View>
+            ),
+            headerRight: () => <NotificationBell />,
+          }}
+          name="ProfileEdit"
+          component={ProfileEdit}
         />
         <Stack.Screen
           options={{
