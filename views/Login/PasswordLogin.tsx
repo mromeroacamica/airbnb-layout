@@ -30,9 +30,8 @@ const PasswordLogin : React.FC<Props> = ({route, navigation}) => {
   const [password, savePassword] = useState('');
   const [wrongPassword, setWrongPassword] = useState(false);
 
-  const submitPassword = async (password:any) => {
+  const submitPassword = async () => {
     const res = await SessionService.logIn(userName, password);
-
     if(res.status === 200){
       const store = await TokenServices.setToken(res.data);
       const hasValidateCertificate = PinConfigServices.canActivate()
@@ -56,7 +55,7 @@ const PasswordLogin : React.FC<Props> = ({route, navigation}) => {
     if (password == '') {
       setWrongPassword(true);
     } else {
-      submitPassword(password);
+      submitPassword();
     }
   };
   return (

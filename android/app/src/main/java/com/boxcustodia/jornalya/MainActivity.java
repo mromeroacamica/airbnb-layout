@@ -1,4 +1,4 @@
-package com.layouts;
+package com.boxcustodia.jornalya;
 
 import com.facebook.react.ReactActivity;
 

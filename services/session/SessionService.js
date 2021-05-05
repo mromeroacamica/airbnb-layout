@@ -1,7 +1,6 @@
 import config from '../../config/env/environment';
 import HttpService from '../http/HttpService';
 import TokenServices from '../token/TokenServices';
-
 class SessionService {
   constructor() {
     this.tenant = '';
@@ -35,8 +34,9 @@ class SessionService {
   async logIn(domain, password) {
     const data = {
       username: domain,
-      password,
+      password: password,
     };
+
     const url = config.baseUrl + '/api/auth/login/mobile';
     const res = await HttpService.post(url, data, {
       headers: {

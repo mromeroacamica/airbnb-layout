@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-
 class HttpServices {
   constructor() {}
   get(url, config = {}) {

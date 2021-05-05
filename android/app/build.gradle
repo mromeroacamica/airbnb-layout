@@ -129,7 +129,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.layouts"
+        applicationId "com.boxcustodia.jornalya"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -144,6 +144,12 @@ android {
         }
     }
     signingConfigs {
+        release {
+      storeFile file('jornalya.keystore')
+      storePassword 'box123'
+      keyAlias 'jornalya'
+      keyPassword 'box123'
+    }
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'
@@ -161,6 +167,7 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
     }
 
