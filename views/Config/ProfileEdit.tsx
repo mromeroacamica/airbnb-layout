@@ -77,11 +77,9 @@ const ProfileEdit: React.FC<Props> = ({navigation, setDocuments}) => {
     // Genero
     if (resp2.data.data.relationships.gender.data != null) {
       token.account.genderId = resp2.data.data.relationships.gender.data.id;
-      console.log('previo filter', genders)
       const gender:any = genders.filter((gender: { id: any; })=>gender.id===resp2.data.data.relationships.gender.data.id)
       if(gender != null){
         // token.account.genderName = gender[0].name;
-        console.log('esto es gender',gender)
         setAccountGender(gender[0])
       }
     } else {
