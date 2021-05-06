@@ -10,6 +10,7 @@ import {
 import PinInput from '../../Components/PinInput/PinInput'
 import SignServices from '../../services/sign/sign.services'
 import SpinnerComponent from '../../Components/Spinner/Spinner.component';
+import DocumentsSigned from './DocumentsSigned';
 
 
 export interface Props{
@@ -22,7 +23,7 @@ const PinConfirmation : React.FC<Props> = ({route,navigation}) => {
     const [showPin, setShowPin] = useState(false)
     const [pinPassword, setPinPassword] = useState('');
     const [showSpinner, setShowSpinner] = useState(false);
-    const [documentsSigned, setDocumentsSigned] = useState(0)
+    let documentsSigned = 0; 
 
     const submitPin=async ()=>{
       setShowSpinner(true)
@@ -45,7 +46,7 @@ const PinConfirmation : React.FC<Props> = ({route,navigation}) => {
   
             if(documentHashSigned){
               endSign = await SignServices.endSign(item,documentHashSigned,documentHashJson.token)
-              setDocumentsSigned(documentsSigned+1)
+              documentsSigned ++
             }
           }
         }
@@ -58,7 +59,7 @@ const PinConfirmation : React.FC<Props> = ({route,navigation}) => {
         }else{
           Alert.alert('Error', 'No se ha firmado correctamente el/los documento/s.', [
               
-            {text: 'Confirmar', onPress: () => navigation.navigate('DocumentsNotSigned')},
+            {text: 'OK', onPress: () => navigation.navigate('DocumentsNotSigned')},
           ]);
         }
       }
@@ -76,7 +77,7 @@ const PinConfirmation : React.FC<Props> = ({route,navigation}) => {
             <PinInput visiblePassword={showPin} setPinPassword={setPinPassword}/>
             <View style={styles.buttonShowContainer}>
               <TouchableOpacity onPress={()=>setShowPin(!showPin)}>
-                <Text style={styles.textShow}>mostrar</Text>
+                <Text style={styles.textShow}>Mostrar</Text>
               </TouchableOpacity>
             </View>
         </View>
