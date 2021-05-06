@@ -39,12 +39,11 @@ const PasswordLogin : React.FC<Props> = ({route, navigation}) => {
         navigation.navigate('PinConfig')
       }
     }else{
-      showAlert()
+      showAlert(res)
     }
   };
-  const showAlert = () => {
-    Alert.alert('Credenciales erroneas', 'Su usuario o contraseña no son correctas.', [
-      
+  const showAlert = (error:any) => {
+    Alert.alert('Credenciales erroneas', `${error.error.errors[0].detail}`, [
       {text: 'Confirmar', onPress: () => console.log('Close')},
     ]);
   };
