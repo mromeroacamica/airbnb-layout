@@ -22,11 +22,17 @@ const PinConfirmation : React.FC<Props> = ({route,navigation}) => {
     const [showPin, setShowPin] = useState(false)
     const [pinPassword, setPinPassword] = useState('');
     const [showSpinner, setShowSpinner] = useState(false);
+    const [documentsSigned, setDocumentsSigned] = useState(0)
 
     const submitPin=async ()=>{
       setShowSpinner(true)
       const certificate=await SignServices.getCertFile()
       const certPem = await SignServices.getCertPem(pinPassword,certificate)
+      if(!certPem){
+        Alert.alert('PIN', 'Se ingresó PIN equivocado.', [
+          {text: 'OK', onPress: () => setShowSpinner(false)}
+        ])
+      }
       let documentHash
       let documentHashSigned
       let endSign
@@ -39,14 +45,22 @@ const PinConfirmation : React.FC<Props> = ({route,navigation}) => {
   
             if(documentHashSigned){
               endSign = await SignServices.endSign(item,documentHashSigned,documentHashJson.token)
+              setDocumentsSigned(documentsSigned+1)
             }
           }
         }
         setShowSpinner(false)
-        Alert.alert('Se firmo correctamente', 'Se ha firmado correctamente el/los documento/s.', [
-            
-          {text: 'Confirmar', onPress: () => navigation.navigate('DocumentsNotSigned')},
-        ]);
+        if(documentsSigned>0){
+          Alert.alert('Se firmo correctamente', `Se ha firmado correctamente ${documentsSigned} documento${documentsSigned>1?'.':'s.'}`, [
+              
+            {text: 'OK', onPress: () => navigation.navigate('DocumentsNotSigned')},
+          ]);
+        }else{
+          Alert.alert('Error', 'No se ha firmado correctamente el/los documento/s.', [
+              
+            {text: 'Confirmar', onPress: () => navigation.navigate('DocumentsNotSigned')},
+          ]);
+        }
       }
     }
 

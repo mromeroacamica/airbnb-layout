@@ -35,7 +35,7 @@ class AccountServices {
 
     const body = {password, pin};
     const res = await HttpService.post(url, body, {headers: headers});
-    return res.status == 200;
+    return res;
   }
   async getAllGenders() {
     const url = config.baseUrl + '/api/genders/';
@@ -43,7 +43,7 @@ class AccountServices {
       'Content-Type': 'application/vnd.api+json',
       Authorization: `Bearer ${TokenServices.getToken().token}`,
     };
-    const res: any = await HttpService.get(url, {headers});
+    const res: any = await HttpService.get(url, {headers: headers});
     return res;
   }
   async getAccount(id: string) {
@@ -59,23 +59,25 @@ class AccountServices {
       'Content-Type': 'application/vnd.api+json',
       Authorization: `Bearer ${TokenServices.getToken().token}`,
     };
-    const res: any = await HttpService.get(url, {headers, params});
+    const res: any = await HttpService.get(url, {
+      headers: headers,
+      params: params,
+    });
     return res;
   }
   async updatePassword(oldPassword: string, newPassword: string) {
-    console.log(TokenServices.getToken());
     const url = config.baseUrl + '/api/change-password';
     const headers = {
       'Content-Type': 'application/vnd.api+json',
       Authorization: `Bearer ${TokenServices.getToken().token}`,
     };
     const body = {oldPassword, newPassword};
-    const res = await HttpService.post(url, body, {headers});
-    console.log(res);
+    const res = await HttpService.post(url, body, {headers: headers});
+    console.log('esto es res', res);
     if (res.status === 200) {
       return res;
     } else {
-      return false;
+      return res;
     }
   }
   async updateMyAccount(
@@ -105,9 +107,7 @@ class AccountServices {
         },
       };
     }
-    console.log('esto es el body', body, url);
-    const res = await HttpService.patch(url, body, {headers});
-    console.log(res);
+    const res = await HttpService.patch(url, body, {headers: headers});
     if (res.status === 200) {
       return res;
     } else {

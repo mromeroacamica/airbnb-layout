@@ -36,12 +36,12 @@ const ConfirmPasswordConfig : React.FC<Props> = ({route, navigation}) => {
       const currentUser = SessionService.getCurrentUser()
       const accountId = currentUser.account.id
     const res = await AccountServices.updatePIN(accountId,password,pinPassword );
-    if (res){
+    if (res.status === 200){
       Alert.alert('Cambio PIN', 'El PIN se ha actualizado correctamente.', [
         {text: 'OK', onPress: () => navigation.navigate('Credentials')},
       ]);
     }else{
-      Alert.alert('Cambio PIN', 'No se ha podido actualizar su PIN', [
+      Alert.alert('Cambio PIN', `No se ha podido actualizar su PIN, ${res.error.errors[0].detail}`, [
         {text: 'OK', onPress: () => navigation.navigate('Credentials')},
       ]);
     }

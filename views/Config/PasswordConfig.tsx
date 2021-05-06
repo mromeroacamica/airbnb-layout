@@ -30,9 +30,8 @@ const PasswordConfig: React.FC<Props> = ({navigation, setDocuments}) => {
         setInProcess(true)
         const validatePassword = passwordValidation(newPW,confirmPW)
         if(validatePassword){
-            console.log('la password esta bien')
             const resUpdate= await AccountServices.updatePassword(oldPW, newPW)
-            if(resUpdate){
+            if(resUpdate.status === 200){
                 const token = TokenServices.getToken()
                 const resSession = await SessionService.logIn(token.account.email, newPW)
                 if(resSession.status === 200){
@@ -45,11 +44,11 @@ const PasswordConfig: React.FC<Props> = ({navigation, setDocuments}) => {
                         {text: 'Confirmar', onPress: () => TokenServices.setToken(null)},
                       ]);
                 }
+            }else{
+                Alert.alert('Cambio Contraseña', `La contraseña NO se ha actualizado, ${resUpdate.error.errors[0].detail}.`, [
+                    {text: 'Confirmar', onPress: () => navigateTo('Credentials')},
+                  ]);
             }
-        }else{
-            Alert.alert('Contraseña incorrecta', 'La contraseña debe contener entre 9 y 16 caracteres. Debe contar por lo menos con una letra mayúscula, una letra minúscula, un carácter especial y un número.', [
-                {text: 'Confirmar', onPress: () => console.log('Close')},
-              ]);
         }
         setInProcess(false)
     }
@@ -59,12 +58,21 @@ const PasswordConfig: React.FC<Props> = ({navigation, setDocuments}) => {
         const regexNumber =(/.*[0-9].*/)
         const regexSpecialCharacter =(/(?=.*[!@#$%^&*])/)
         if(newPW !== confirmPW){
+            Alert.alert('Contraseña incorrecta', 'Las contraseñas deben coincidir', [
+                {text: 'Confirmar', onPress: () => console.log('Close')},
+              ]);
             return false
         }
         if(newPW.length < 6 || newPW.length>16){
+            Alert.alert('Contraseña incorrecta', 'La contraseña debe contener entre 9 y 16 caracteres. Debe contar por lo menos con una letra mayúscula, una letra minúscula, un carácter especial y un número.', [
+                {text: 'Confirmar', onPress: () => console.log('Close')},
+              ]);
             return false
         }
         if(!regexLowerCase.test(newPW) || !regexUpperCase.test(newPW ) || !regexNumber.test(newPW) || !regexSpecialCharacter.test(newPW) ){
+            Alert.alert('Contraseña incorrecta', 'La contraseña debe contener entre 9 y 16 caracteres. Debe contar por lo menos con una letra mayúscula, una letra minúscula, un carácter especial y un número.', [
+                {text: 'Confirmar', onPress: () => console.log('Close')},
+              ]);
             return false
         }
         return true
