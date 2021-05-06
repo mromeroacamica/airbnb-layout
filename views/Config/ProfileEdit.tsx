@@ -25,8 +25,8 @@ const ProfileEdit: React.FC<Props> = ({navigation, setDocuments}) => {
   const [genders, setGenders]:Array<any>=useState([]);
   const [accountGender, setAccountGender]:any = useState('');
   const [accountPhone, setAccountPhone]:any = useState('');
-  const [accountAltEmail, setAccountAltEmail] = useState('')
-  const [accountDateBirth, setAccountDateBirth] = useState ('')
+  const [accountAltEmail, setAccountAltEmail]:any = useState('')
+  const [accountDateBirth, setAccountDateBirth]:any = useState ('')
   useEffect(()=>{
     getGenders()
   },[])
@@ -77,9 +77,10 @@ const ProfileEdit: React.FC<Props> = ({navigation, setDocuments}) => {
     // Genero
     if (resp2.data.data.relationships.gender.data != null) {
       token.account.genderId = resp2.data.data.relationships.gender.data.id;
-      const gender:any = genders.filter((gender: { id: any; })=>gender.id===token.account.genderId)
+      const gender:any = genders.filter((gender: { id: any; })=>gender.id===resp2.data.data.relationships.gender.data.id)
       if(gender != null){
-        token.account.genderName = gender[0].name;
+        // token.account.genderName = gender[0].name;
+        console.log('esto es gender',gender)
         setAccountGender(gender[0])
       }
     } else {
@@ -140,7 +141,7 @@ const ProfileEdit: React.FC<Props> = ({navigation, setDocuments}) => {
   const validatePhone = ()=>{
     const regexPhone = /^(\+\(?\d{1,3}\)?\s\d{1,3}\s)?[0-9\-\s]{3,4}[\s\-]?\d{6,7}$/g;
     if (accountPhone.match(regexPhone) == null) {
-      Alert.alert('Editar teléfono', 'El formato del teléfono es incorrecto\n, Ej: +54 9 351 4921234', [
+      Alert.alert('Editar teléfono', 'El formato del teléfono es incorrecto,\n Ej: +54 9 351 4921234', [
         {text: 'OK', onPress: () => console.log('close')},
       ]);
       return false;
@@ -161,20 +162,30 @@ const ProfileEdit: React.FC<Props> = ({navigation, setDocuments}) => {
   }
   const updateAccount = async ()=>{
     setInitLoaded(false)
-    if(!validatePhone()){
-      setInitLoaded(true)
-      return
-    }
-    if(!validateEmail()){
-      setInitLoaded(true)
-      return
-    }
-    const date = new Date(accountDateBirth)
     const payload = {
-      birthdate:date,
-      phone:accountPhone,
-      alternativeEmail:accountAltEmail
+      birthdate:null,
+      phone:null,
+      alternativeEmail:null
     }
+    if(accountPhone !== ''){
+      if(!validatePhone()){
+        setInitLoaded(true)
+        return
+      }
+      payload.phone = accountPhone
+    }
+    if(accountAltEmail !== ''){
+      if(!validateEmail()){
+        setInitLoaded(true)
+        return
+      }
+      payload.alternativeEmail = accountAltEmail
+    }
+    if(accountDateBirth !== ''){
+      const date:any = new Date(accountDateBirth)
+      payload.birthdate = date
+    }
+
     const res = await AccountServices.updateMyAccount(token.account.id,payload,accountGender)
     if (res.status === 200) {
       Alert.alert('Editar perfil', 'Se ha editado el perfil correctamente.', [
@@ -194,6 +205,7 @@ const ProfileEdit: React.FC<Props> = ({navigation, setDocuments}) => {
           <ScrollView style={styles.scrollProfile}>
             <View style={{padding:10}}>
               <Text>Género</Text>
+              {accountGender !== ''?
                 <View style={styles.pickerContainer}>
                     <Picker
                     selectedValue={accountGender}
@@ -207,6 +219,7 @@ const ProfileEdit: React.FC<Props> = ({navigation, setDocuments}) => {
                     })}
                     </Picker>
                 </View>
+            :null}
                 <Text style={styles.label}>Teléfono</Text>
                 <TextInput
                     style={styles.phoneInput}

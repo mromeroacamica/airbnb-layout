@@ -81,7 +81,7 @@ const ProfileComponent: React.FC<Props> = ({navigation, setDocuments}) => {
     // Genero
     if (resp2.data.data.relationships.gender.data != null) {
       token.account.genderId = resp2.data.data.relationships.gender.data.id;
-      const gender:any = genders.filter((gender: { id: any; })=>gender.id===token.account.genderId)
+      const gender:any = genders.filter((gender: { id: any; })=>gender.id===resp2.data.data.relationships.gender.data.id)
       if(gender !== null){
         token.account.genderName = gender[0].name;
       }

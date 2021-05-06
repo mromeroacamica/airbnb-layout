@@ -30,7 +30,8 @@ const UserLogin = ({submitUser}) => {
           style={styles.input}
           keyboardType={'email-address'}
           onChangeText={(text) => {
-            saveUser(text);
+            const textToLowercase = text.toLowerCase();
+            saveUser(textToLowercase);
           }}
         />
       </View>
