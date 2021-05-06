@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet, Text, ScrollView,TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text, ScrollView,TouchableOpacity, ActivityIndicator} from 'react-native';
 import ContainerScreen from '../../Components/Container/Container';
 import RoundImage from '../../Components/RoundImage/RoundImage';
 import TokenServices from '../../services/token/TokenServices';
@@ -27,7 +27,10 @@ const ProfileComponent: React.FC<Props> = ({navigation, setDocuments}) => {
   const [initials, setInitials] = useState('');
   const [genders, setGenders]:Array<any>=useState([]);
   useEffect(()=>{
-    getGenders()
+    const unsubscribe = navigation.addListener('focus', () => {
+      getGenders()
+
+    })
   },[])
 
   useEffect(() => {
@@ -166,7 +169,11 @@ const ProfileComponent: React.FC<Props> = ({navigation, setDocuments}) => {
             </View>
           </ScrollView>
         </View>
-      :null}
+      :
+      <View style={{flex:1, justifyContent:'center'}}>
+      <ActivityIndicator size="large" color={Colors.primary} />
+      </View>
+      }
       </ContainerScreen>
     </>
   );

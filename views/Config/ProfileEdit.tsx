@@ -77,6 +77,7 @@ const ProfileEdit: React.FC<Props> = ({navigation, setDocuments}) => {
     // Genero
     if (resp2.data.data.relationships.gender.data != null) {
       token.account.genderId = resp2.data.data.relationships.gender.data.id;
+      console.log('previo filter', genders)
       const gender:any = genders.filter((gender: { id: any; })=>gender.id===resp2.data.data.relationships.gender.data.id)
       if(gender != null){
         // token.account.genderName = gender[0].name;
@@ -186,10 +187,10 @@ const ProfileEdit: React.FC<Props> = ({navigation, setDocuments}) => {
       payload.birthdate = date
     }
 
-    const res = await AccountServices.updateMyAccount(token.account.id,payload,accountGender)
+    const res = await AccountServices.updateMyAccount(token.account.id,payload,accountGender.id)
     if (res.status === 200) {
       Alert.alert('Editar perfil', 'Se ha editado el perfil correctamente.', [
-        {text: 'Confirmar', onPress: () => navigateTo('Profile')},
+        {text: 'Confirmar', onPress: () => navigateTo('Config')},
       ]); 
     } else {
       Alert.alert('Editar perfil', 'No se ha editado el perfil correctamente.', [
@@ -214,7 +215,7 @@ const ProfileEdit: React.FC<Props> = ({navigation, setDocuments}) => {
                     >
                     {genders.map((gender: any)=>{
                     return(
-                        <Picker.Item key={gender.id} label={gender.name} value={gender.id} />
+                        <Picker.Item key={gender.id} label={gender.name} value={gender} />
                     )
                     })}
                     </Picker>
