@@ -52,11 +52,13 @@ const DocumentViewer: React.FC<Props> = ({route, navigation}) => {
         filePath = resp.path();
         let options = {
           type: type,
-          url: filePath // (Platform.OS === 'android' ? 'file://' + filePath)
+          url: filePath, // (Platform.OS === 'android' ? 'file://' + filePath)
+          title:'Compartir documento',
+          message:'Compartir'
         };
         await Share.open(options);
         // remove the image or pdf from device's storage
-        await RNFS.unlink(filePath);
+        // await RNFS.unlink(filePath);
     });
 
     }else{
