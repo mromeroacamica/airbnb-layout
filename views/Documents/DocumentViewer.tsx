@@ -35,12 +35,31 @@ const DocumentViewer: React.FC<Props> = ({route, navigation}) => {
   };
   
   const onShare = async ()=>{
+    const type = 'application/pdf' 
     const currentUser = SessionService.getCurrentUser()
     const fileUrl = `${config.baseUrl}/api/document-downloads/${itemId[0]}?token=${currentUser.token}`;
     if(Platform.OS === 'ios'){
+    let filePath = null;
+    let file_url_length = fileUrl.length;
+    const dirs = RNFetchBlob.fs.dirs.DocumentDir
+    const configOptions = {
+      fileCache: true,
+      path:dirs + `/${otherParam}.pdf`
+    };
+    RNFetchBlob.config(configOptions)
+      .fetch('GET', fileUrl)
+      .then(async resp => {
+        filePath = resp.path();
+        let options = {
+          type: type,
+          url: filePath // (Platform.OS === 'android' ? 'file://' + filePath)
+        };
+        await Share.open(options);
+        // remove the image or pdf from device's storage
+        await RNFS.unlink(filePath);
+    });
 
     }else{
-    const type = 'application/pdf' 
     let filePath:any = null;
     let file_url_length = fileUrl.length;
     const configOptions = { fileCache: true };
